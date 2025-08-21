@@ -122,7 +122,7 @@ const AboutSection = () => {
       rotateX: 0,
       transition: {
         duration: 0.6,
-        type: "spring",
+        type: 'spring' as const,
         stiffness: 100
       }
     }
@@ -135,7 +135,7 @@ const AboutSection = () => {
       scale: 1,
       transition: {
         duration: 0.4,
-        type: "spring",
+        type: 'spring' as const,
         stiffness: 200
       }
     }

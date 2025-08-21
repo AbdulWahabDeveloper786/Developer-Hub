@@ -3,14 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 import Typed from 'typed.js';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 
 const HeroSection = () => {
   const typedRef = useRef<HTMLSpanElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
 
 
   useEffect(() => {
@@ -210,7 +208,7 @@ Your one-stop destination for everything development! No more endless Google sea
                   }}
                   transition={{
                     duration: 0.8,
-                    type: "spring"
+                    type: "spring" as const
                   }}
                   style={{
                     transformStyle: 'preserve-3d'
@@ -448,8 +446,8 @@ Your one-stop destination for everything development! No more endless Google sea
             top: mousePosition.y - 192,
           }}
           animate={{
-            scale: isHovered ? 1.2 : 1,
-            opacity: isHovered ? 0.3 : 0.1,
+            scale: 1,
+            opacity: 0.1,
           }}
           transition={{ duration: 0.3 }}
         />

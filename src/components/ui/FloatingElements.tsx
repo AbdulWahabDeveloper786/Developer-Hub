@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useEffect, useState } from 'react';
 
 interface FloatingElement {
@@ -15,10 +14,8 @@ interface FloatingElement {
 }
 
 const FloatingElements = () => {
-  const { scrollDirection, scrollY } = useScrollDirection();
   const [elements, setElements] = useState<FloatingElement[]>([]);
   const [isVisible, setIsVisible] = useState(false);
-  const [animationTime, setAnimationTime] = useState(0);
 
   useEffect(() => {
     // Generate floating elements
@@ -48,16 +45,7 @@ const FloatingElements = () => {
     setIsVisible(true);
   }, []);
 
-  useEffect(() => {
-    // Animation loop for smooth floating motion
-    let animationId: number;
-    const animate = () => {
-      setAnimationTime(Date.now() * 0.001);
-      animationId = requestAnimationFrame(animate);
-    };
-    animate();
-    return () => cancelAnimationFrame(animationId);
-  }, []);
+
 
   const getShapeComponent = (element: FloatingElement) => {
     const baseProps = {

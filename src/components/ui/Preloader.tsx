@@ -58,7 +58,7 @@ const Preloader = () => {
       clearInterval(interval);
       clearInterval(textInterval);
     };
-  }, [isMounted]);
+  }, [isMounted, loadingTexts]);
 
   return (
     <AnimatePresence>

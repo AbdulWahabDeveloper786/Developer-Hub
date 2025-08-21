@@ -4,8 +4,7 @@ import Header from '@/components/layout/Header';
 import HeroSection from '@/components/sections/HeroSection';
 import ResourceDatabaseSection from '@/components/sections/ResourceDatabaseSection';
 import ToolsSection from '@/components/sections/ToolsSection';
-import LibrariesSection from '@/components/sections/LibrariesSection';
-import FrameworksSection from '@/components/sections/FrameworksSection';
+
 import LibrariesFrameworksSection from '@/components/sections/LibrariesFrameworksSection';
 import AboutSection from '@/components/sections/AboutSection';
 import ScrollProgress from '@/components/ui/ScrollProgress';

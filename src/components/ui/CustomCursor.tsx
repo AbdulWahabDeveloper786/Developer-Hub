@@ -139,7 +139,7 @@ const CustomCursor = () => {
           scale: isClicking ? 0.3 : isHovering ? 2.5 : 1,
         }}
         transition={{
-          type: "spring",
+          type: "spring" as const,
           stiffness: 50,
           damping: 10,
           mass: 1.2

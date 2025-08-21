@@ -214,7 +214,7 @@ const FrameworksSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {filteredFrameworks.map((framework, index) => (
+            {filteredFrameworks.map((framework) => (
               <motion.div
                 key={framework.name}
                 variants={itemVariants}

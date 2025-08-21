@@ -45,11 +45,7 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
   }, []);
 
   useEffect(() => {
-    let progressInterval: NodeJS.Timeout;
-    let textInterval: NodeJS.Timeout;
-
-    // Progress animation - ensures it reaches exactly 100%
-    progressInterval = setInterval(() => {
+    const progressInterval: NodeJS.Timeout = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(progressInterval);
@@ -79,7 +75,7 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
     }, 80);
 
     // Text animation
-    textInterval = setInterval(() => {
+    const textInterval: NodeJS.Timeout = setInterval(() => {
       setCurrentText(prev => {
         const currentIndex = loadingTexts.indexOf(prev);
         if (currentIndex < loadingTexts.length - 1) {
@@ -89,11 +85,13 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
       });
     }, 1000);
 
+
+
     return () => {
       clearInterval(progressInterval);
       clearInterval(textInterval);
     };
-  }, [onComplete]);
+  }, [onComplete, loadingTexts]);
 
   return (
     <AnimatePresence>

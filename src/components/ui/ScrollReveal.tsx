@@ -76,8 +76,7 @@ const ScrollReveal = ({
       transition: {
         duration,
         delay,
-        ease: [0.25, 0.25, 0.25, 0.75],
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 100,
         damping: 15
       }

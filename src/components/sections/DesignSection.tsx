@@ -75,7 +75,7 @@ const DesignSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {designs.map((design, index) => (
+          {designs.map((design) => (
             <motion.div
               key={design.title}
               variants={itemVariants}

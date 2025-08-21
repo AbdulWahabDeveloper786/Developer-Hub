@@ -7,7 +7,6 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
 
 const LibrariesSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [hoveredLibrary, setHoveredLibrary] = useState(null);
 
   const categories = [
     { id: 'all', name: 'All Libraries', icon: '📚' },
@@ -238,8 +237,6 @@ const LibrariesSection = () => {
               key={library.name}
               variants={itemVariants}
               className="group"
-              onHoverStart={() => setHoveredLibrary(library.name)}
-              onHoverEnd={() => setHoveredLibrary(null)}
             >
               <Link
                 href={library.url}
