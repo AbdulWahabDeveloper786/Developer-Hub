@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import useMobile from '@/hooks/useMobile';
 
 const LibrariesSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+  const isMobile = useMobile();
 
   const categories = [
     { id: 'all', name: 'All Libraries', icon: '📚' },
@@ -81,6 +83,30 @@ const LibrariesSection = () => {
       description: 'Open-source UI elements',
       popularity: 82,
       version: 'Latest'
+    },
+    { 
+      name: 'Shadcn/ui', 
+      url: 'https://ui.shadcn.com/', 
+      category: 'ui',
+      description: 'Beautifully designed components built with Radix UI and Tailwind CSS',
+      popularity: 94,
+      version: 'Latest'
+    },
+    { 
+      name: 'Daisy UI', 
+      url: 'https://daisyui.com/', 
+      category: 'ui',
+      description: 'The most popular component library for Tailwind CSS',
+      popularity: 89,
+      version: 'v4.12'
+    },
+    { 
+      name: 'Material UI', 
+      url: 'https://mui.com/', 
+      category: 'ui',
+      description: 'React components implementing Google\'s Material Design',
+      popularity: 91,
+      version: 'v5.15'
     },
     { 
       name: 'Lottie', 
@@ -246,18 +272,18 @@ const LibrariesSection = () => {
               >
                 <motion.div
                   className="relative h-full p-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-xl transition-all duration-300 hover:border-[#08f9ff]/50 hover:shadow-lg hover:shadow-[#08f9ff]/25 overflow-hidden group backdrop-blur-sm"
-                  whileHover={{ 
+                  whileHover={isMobile ? {} : { 
                     scale: 1.02,
                     y: -4
                   }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={isMobile ? {} : { scale: 0.98 }}
                 >
                   {/* Background Animation */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-[#08f9ff]/10 to-[#08f9ff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
-                    initial={{ scale: 0 }}
-                    whileHover={{ scale: 1 }}
-                    transition={{ duration: 0.3 }}
+                    initial={isMobile ? {} : { scale: 0 }}
+                    whileHover={isMobile ? {} : { scale: 1 }}
+                    transition={isMobile ? {} : { duration: 0.3 }}
                   />
                   
                   {/* Content */}

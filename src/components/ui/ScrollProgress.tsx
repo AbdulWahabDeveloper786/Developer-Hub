@@ -39,18 +39,9 @@ const ScrollProgress = () => {
           <motion.button
             onClick={scrollToTop}
             className="relative w-16 h-16 bg-gradient-to-br from-[#08f9ff] to-[#0066cc] rounded-full shadow-lg hover:shadow-2xl hover:shadow-[#08f9ff]/50 transition-all duration-300 group overflow-hidden"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            animate={{
-              y: [0, -5, 0],
-            }}
-            transition={{
-              y: {
-                duration: 2,
-                repeat: 2,
-                ease: "easeInOut"
-              }
-            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
             {/* Progress Circle */}
             <svg
@@ -81,31 +72,11 @@ const ScrollProgress = () => {
             
             {/* Arrow Icon */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <motion.i
-                className="fas fa-arrow-up text-white text-xl group-hover:text-black transition-colors"
-                animate={{
-                  y: [0, -2, 0],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: 2,
-                  ease: "easeInOut"
-                }}
-              />
+              <i className="fas fa-arrow-up text-white text-xl group-hover:text-black transition-colors" />
             </div>
             
             {/* Glow Effect */}
-            <motion.div
-              className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: 2,
-                ease: "easeInOut"
-              }}
-            />
+            <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.button>
         </motion.div>
       )}

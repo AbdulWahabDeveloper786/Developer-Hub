@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import useMobile from '@/hooks/useMobile';
 
 interface FloatingElement {
   id: number;
@@ -16,6 +17,7 @@ interface FloatingElement {
 const FloatingElements = () => {
   const [elements, setElements] = useState<FloatingElement[]>([]);
   const [isVisible, setIsVisible] = useState(false);
+  const isMobile = useMobile();
 
   useEffect(() => {
     // Generate floating elements
@@ -77,6 +79,11 @@ const FloatingElements = () => {
         return <div {...baseProps} className="rounded-full" />;
     }
   };
+
+  // Don't render floating elements on mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">

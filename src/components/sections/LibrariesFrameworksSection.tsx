@@ -3,10 +3,12 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import useMobile from '@/hooks/useMobile';
 
 const LibrariesFrameworksSection = () => {
   const [activeTab, setActiveTab] = useState('frontend');
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const isMobile = useMobile();
 
   const categories = {
     frontend: {
@@ -283,35 +285,37 @@ const LibrariesFrameworksSection = () => {
     <motion.section 
       id="libraries-frameworks" 
       className="min-h-screen py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      initial={isMobile ? {} : { opacity: 0 }}
+      whileInView={isMobile ? {} : { opacity: 1 }}
+      transition={isMobile ? {} : { duration: 1 }}
       viewport={{ once: true }}
     >
-      {/* Background Particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#08f9ff] rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`
-            }}
-            animate={{
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0]
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: 'easeInOut'
-            }}
-          />
-        ))}
-      </div>
+      {/* Background Particles - Disabled on mobile */}
+      {!isMobile && (
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-[#08f9ff] rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`
+              }}
+              animate={{
+                y: [0, -100, 0],
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0]
+              }}
+              transition={{
+                duration: 4 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
@@ -351,8 +355,8 @@ const LibrariesFrameworksSection = () => {
                     ? 'bg-gradient-to-r from-[#08f9ff] to-[#0066cc] text-black'
                     : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={isMobile ? {} : { scale: 1.05 }}
+                whileTap={isMobile ? {} : { scale: 0.95 }}
               >
                 <span className="mr-2">{category.icon}</span>
                 {category.title}
@@ -383,35 +387,20 @@ const LibrariesFrameworksSection = () => {
                 key={item.name}
                 variants={itemVariants}
                 className="relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:border-[#08f9ff]/50 transition-all duration-500 group overflow-hidden"
-                whileHover={{ 
-                  scale: 1.02, 
-                  y: -5,
-                  rotateY: 2,
-                  rotateX: 2
+                whileHover={isMobile ? {} : { 
+                  scale: 1.01, 
+                  y: -2
                 }}
                 onHoverStart={() => setHoveredItem(item.name)}
                 onHoverEnd={() => setHoveredItem(null)}
                 style={{
-                  transformStyle: 'preserve-3d',
-                  perspective: '1000px',
                   pointerEvents: 'auto'
                 }}
+                transition={{ duration: 0.2 }}
               >
-                {/* 3D Background Effect */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${categories[activeTab as keyof typeof categories].color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-xl pointer-events-none`}
-                  animate={hoveredItem === item.name ? {
-                    background: [
-                      `linear-gradient(135deg, rgba(8,249,255,0.1), transparent, rgba(0,102,204,0.1))`,
-                      `linear-gradient(225deg, rgba(0,102,204,0.1), transparent, rgba(8,249,255,0.1))`,
-                      `linear-gradient(315deg, rgba(8,249,255,0.1), transparent, rgba(0,102,204,0.1))`
-                    ]
-                  } : {}}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'linear'
-                  }}
+                {/* Simplified Background Effect */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${categories[activeTab as keyof typeof categories].color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl pointer-events-none`}
                   style={{ zIndex: 0 }}
                 />
 
@@ -498,34 +487,7 @@ const LibrariesFrameworksSection = () => {
                   </motion.svg>
                 </motion.a>
 
-                {/* Floating Particles on Hover */}
-                {hoveredItem === item.name && (
-                  <>
-                    {[...Array(5)].map((_, particleIndex) => (
-                      <motion.div
-                        key={particleIndex}
-                        className="absolute w-1 h-1 bg-[#08f9ff] rounded-full pointer-events-none"
-                        style={{
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`,
-                          zIndex: 1
-                        }}
-                        animate={{
-                          y: [-20, -40, -20],
-                          x: [-10, 10, -10],
-                          opacity: [0, 1, 0],
-                          scale: [0, 1, 0]
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: particleIndex * 0.2,
-                          ease: 'easeInOut'
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
+                {/* Removed floating particles for better performance */}
               </motion.div>
             ))}
           </motion.div>

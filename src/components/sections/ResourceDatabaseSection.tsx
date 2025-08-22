@@ -315,23 +315,7 @@ const ResourceDatabaseSection = () => {
           </div>
         </ScrollReveal>
 
-        {/* Search Bar */}
-        <ScrollReveal direction="up" delay={0.2}>
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search resources, tools, frameworks..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-6 py-4 text-white placeholder-gray-400 focus:border-[#08f9ff] focus:outline-none transition-colors"
-              />
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                🔍
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
+        {/* Search functionality is now available in the header */}
 
         {/* Category Filter */}
         <ScrollReveal direction="up" delay={0.3}>

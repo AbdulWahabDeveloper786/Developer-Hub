@@ -131,9 +131,24 @@
     position: relative;
   }
   
-  /* Ensure custom cursor is always visible */
-  * {
-    cursor: none !important;
+  /* Ensure custom cursor is always visible on desktop only */
+  @media (min-width: 769px) {
+    * {
+      cursor: none !important;
+    }
+    
+    /* Override any potential cursor styles */
+    a, button, input, textarea, select, [role="button"], [tabindex] {
+      cursor: none !important;
+      pointer-events: auto !important;
+    }
+    
+    /* Ensure links are always clickable */
+    a[href] {
+      pointer-events: auto !important;
+      position: relative;
+      z-index: 999;
+    }
   }
   
   /* Fade in animation */
@@ -146,19 +161,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-  }
-  
-  /* Override any potential cursor styles */
-  a, button, input, textarea, select, [role="button"], [tabindex] {
-    cursor: none !important;
-    pointer-events: auto !important;
-  }
-  
-  /* Ensure links are always clickable */
-  a[href] {
-    pointer-events: auto !important;
-    position: relative;
-    z-index: 999;
   }
   
   /* Custom scrollbar */

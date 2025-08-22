@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, ReactNode } from 'react';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
+import useMobile from '@/hooks/useMobile';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -19,15 +20,29 @@ const ScrollReveal = ({
   children,
   direction = 'up',
   delay = 0,
-  duration = 0.6,
-  distance = 50,
+  duration = 0.3, // Reduced default duration
+  distance = 30, // Reduced default distance
   className = '',
   triggerOnce = false,
   scrollUpOnly = false
 }: ScrollRevealProps) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: triggerOnce, margin: '-100px' });
+  const isMobile = useMobile();
+  const isInView = useInView(ref, { 
+    once: triggerOnce, 
+    margin: '-50px', // Reduced margin for earlier trigger
+    amount: 0.1 // Only need 10% of element visible
+  });
   const { scrollDirection } = useScrollDirection();
+
+  // On mobile, return static content without animations
+  if (isMobile) {
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
+  }
 
   // If scrollUpOnly is true, only animate when scrolling up
   // Otherwise, animate when element comes into view regardless of scroll direction
@@ -74,11 +89,10 @@ const ScrollReveal = ({
     visible: {
       ...getAnimateState(),
       transition: {
-        duration,
+        duration: Math.min(duration, 0.4), // Cap duration for better performance
         delay,
-        type: 'spring' as const,
-        stiffness: 100,
-        damping: 15
+        type: 'tween' as const, // Use tween instead of spring for better performance
+        ease: [0.25, 0.46, 0.45, 0.94] // Custom easing for smooth animation
       }
     }
   };

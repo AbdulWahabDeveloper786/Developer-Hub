@@ -323,31 +323,7 @@ const AboutSection = () => {
                     ))}
                   </div>
                   
-                  {/* Floating Particles */}
-                  <motion.div
-                    className="absolute top-4 right-4 w-2 h-2 bg-[#08f9ff] rounded-full opacity-0 group-hover:opacity-100"
-                    animate={{
-                      y: [0, -10, 0],
-                      opacity: [0.5, 1, 0.5]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: 2,
-                      delay: index * 0.2
-                    }}
-                  />
-                  <motion.div
-                    className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-[#08f9ff] rounded-full opacity-0 group-hover:opacity-100"
-                    animate={{
-                      y: [0, -8, 0],
-                      opacity: [0.3, 0.8, 0.3]
-                    }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: 2,
-                      delay: index * 0.3
-                    }}
-                  />
+                  {/* Removed floating particles for better performance */}
                 </motion.div>
               </motion.div>
             ))}

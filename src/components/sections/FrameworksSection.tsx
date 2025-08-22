@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import useMobile from '@/hooks/useMobile';
 
 const FrameworksSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [hoveredFramework, setHoveredFramework] = useState<string | null>(null);
+  const isMobile = useMobile();
 
   const categories = [
     { id: 'all', name: 'All', icon: '🌟' },
@@ -160,9 +162,9 @@ const FrameworksSection = () => {
     <motion.section 
       id="frameworks" 
       className="min-h-screen py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-black to-gray-900"
-      initial={{ x: -100, opacity: 0 }}
-      whileInView={{ x: 0, opacity: 1 }}
-      transition={{ 
+      initial={isMobile ? {} : { x: -100, opacity: 0 }}
+      whileInView={isMobile ? {} : { x: 0, opacity: 1 }}
+      transition={isMobile ? {} : { 
         duration: 1, 
         delay: 0.2,
         ease: [0.25, 0.46, 0.45, 0.94]
@@ -172,9 +174,9 @@ const FrameworksSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12 sm:mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={isMobile ? {} : { opacity: 0, y: 30 }}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          transition={isMobile ? {} : { duration: 0.8 }}
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#08f9ff] mb-6 sm:mb-8">
@@ -225,8 +227,8 @@ const FrameworksSection = () => {
                 <Link href={framework.url} target="_blank" rel="noopener noreferrer">
                   <motion.div
                     className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 h-full border border-gray-700 hover:border-[#08f9ff]/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#08f9ff]/20 overflow-hidden"
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.3 }}
+                    whileHover={isMobile ? {} : { y: -5 }}
+                    transition={isMobile ? {} : { duration: 0.3 }}
                   >
                     {/* Background Pattern */}
                     <div className="absolute inset-0 opacity-10">
@@ -305,8 +307,8 @@ const FrameworksSection = () => {
                         </span>
                         <motion.div
                           className="w-6 h-6 text-[#08f9ff] opacity-0 group-hover:opacity-100 transition-opacity"
-                          animate={hoveredFramework === framework.name ? { x: 5 } : { x: 0 }}
-                          transition={{ duration: 0.3 }}
+                          animate={isMobile ? {} : (hoveredFramework === framework.name ? { x: 5 } : { x: 0 })}
+                          transition={isMobile ? {} : { duration: 0.3 }}
                         >
                           <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />

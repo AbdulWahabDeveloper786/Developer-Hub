@@ -3,23 +3,38 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import useMobile from '@/hooks/useMobile';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const isMobile = useMobile();
 
-  // Handle clicking outside to close menu
+  // Handle clicking outside to close menu and search
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
       const target = event.target as Node;
       if (menuRef.current && !menuRef.current.contains(target) && isMenuOpen) {
         setIsMenuOpen(false);
       }
+      // Close search dropdown when clicking outside (desktop only)
+      if (isSearchOpen && !window.matchMedia('(max-width: 768px)').matches) {
+        const searchContainer = document.querySelector('.search-container');
+        if (searchContainer && !searchContainer.contains(target)) {
+          setIsSearchOpen(false);
+          setSearchQuery('');
+          setSearchResults([]);
+        }
+      }
     };
 
-    if (isMenuOpen) {
+    if (isMenuOpen || isSearchOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
     }
@@ -28,7 +43,7 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isSearchOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -141,6 +156,86 @@ const Header = () => {
       { href: '#about_me', label: 'About', id: 'about_me' },
   ];
 
+  // Search data - this would typically come from a database or API
+  const searchData = [
+    { title: 'React', category: 'Framework', section: 'libraries-frameworks', description: 'A JavaScript library for building user interfaces', url: 'https://react.dev' },
+    { title: 'Next.js', category: 'Framework', section: 'libraries-frameworks', description: 'The React Framework for Production', url: 'https://nextjs.org' },
+    { title: 'Tailwind CSS', category: 'CSS Framework', section: 'libraries-frameworks', description: 'Utility-first CSS framework', url: 'https://tailwindcss.com' },
+    { title: 'Shadcn/ui', category: 'UI Library', section: 'libraries-frameworks', description: 'Beautifully designed components built with Radix UI and Tailwind CSS', url: 'https://ui.shadcn.com' },
+    { title: 'Material UI', category: 'UI Library', section: 'libraries-frameworks', description: 'React components implementing Google\'s Material Design', url: 'https://mui.com' },
+    { title: 'Daisy UI', category: 'UI Library', section: 'libraries-frameworks', description: 'The most popular component library for Tailwind CSS', url: 'https://daisyui.com' },
+    { title: 'Framer Motion', category: 'Animation Library', section: 'libraries-frameworks', description: 'Production-ready motion library for React', url: 'https://www.framer.com/motion' },
+    { title: 'Font Awesome', category: 'Icon Library', section: 'libraries-frameworks', description: 'Icon library and toolkit', url: 'https://fontawesome.com' },
+    { title: 'Three.js', category: 'JavaScript Library', section: 'libraries-frameworks', description: '3D graphics library', url: 'https://threejs.org' },
+    { title: 'GSAP', category: 'Animation Library', section: 'libraries-frameworks', description: 'Professional animation library', url: 'https://greensock.com/gsap' },
+    { title: 'Chart.js', category: 'Data Visualization', section: 'libraries-frameworks', description: 'Chart and graph library', url: 'https://www.chartjs.org' },
+    { title: 'Lottie', category: 'Animation Library', section: 'libraries-frameworks', description: 'Render After Effects animations natively on Web', url: 'https://lottiefiles.com' },
+    { title: 'AOS', category: 'Animation Library', section: 'libraries-frameworks', description: 'Animate On Scroll Library', url: 'https://michalsnik.github.io/aos' },
+    { title: 'Anime.js', category: 'Animation Library', section: 'libraries-frameworks', description: 'Lightweight JavaScript animation library', url: 'https://animejs.com' },
+    { title: 'Velocity.js', category: 'Animation Library', section: 'libraries-frameworks', description: 'Accelerated JavaScript animation', url: 'http://velocityjs.org' },
+    { title: 'Popmotion', category: 'Animation Library', section: 'libraries-frameworks', description: 'Simple animation libraries for delightful user interfaces', url: 'https://popmotion.io' },
+    { title: 'React Spring', category: 'Animation Library', section: 'libraries-frameworks', description: 'Spring-physics based animation library for React', url: 'https://react-spring.dev' },
+    { title: 'React Transition Group', category: 'Animation Library', section: 'libraries-frameworks', description: 'Transition components for React', url: 'https://reactcommunity.org/react-transition-group' },
+    { title: 'GitHub', category: 'Platform', section: 'tools', description: 'Code hosting platform for version control and collaboration', url: 'https://github.com' },
+    { title: 'CodePen', category: 'Tool', section: 'tools', description: 'Online code editor and playground', url: 'https://codepen.io' },
+    { title: 'Stack Overflow', category: 'Resource', section: 'resources', description: 'Q&A platform for developers', url: 'https://stackoverflow.com' },
+    { title: 'MDN Web Docs', category: 'Resource', section: 'resources', description: 'Web development documentation', url: 'https://developer.mozilla.org' },
+    { title: 'Vercel', category: 'Platform', section: 'tools', description: 'Frontend deployment platform', url: 'https://vercel.com' },
+    { title: 'Netlify', category: 'Platform', section: 'tools', description: 'Web development platform', url: 'https://netlify.com' },
+    { title: 'Figma', category: 'Design Tool', section: 'tools', description: 'Collaborative interface design tool', url: 'https://figma.com' }
+  ];
+
+  // Search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim() === '') {
+      setSearchResults([]);
+      return;
+    }
+
+    const filtered = searchData.filter(item => 
+      item.title.toLowerCase().includes(query.toLowerCase()) ||
+      item.category.toLowerCase().includes(query.toLowerCase()) ||
+      item.description.toLowerCase().includes(query.toLowerCase())
+    );
+    setSearchResults(filtered.slice(0, 8)); // Limit to 8 results
+  };
+
+  const handleSearchItemClick = (result: any) => {
+    setIsSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
+    
+    // If the result has a URL, open it in a new tab
+    if (result.url) {
+      window.open(result.url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Fallback to section scrolling for items without URLs
+      const targetElement = document.getElementById(result.section);
+      if (targetElement) {
+        const headerHeight = 80;
+        const elementTop = targetElement.getBoundingClientRect().top;
+        const currentScroll = window.pageYOffset;
+        const targetPosition = currentScroll + elementTop - headerHeight;
+        
+        window.scrollTo({
+          top: Math.max(0, targetPosition),
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+    if (!isSearchOpen) {
+      setTimeout(() => searchRef.current?.focus(), 100);
+    } else {
+      setSearchQuery('');
+      setSearchResults([]);
+    }
+  };
+
   return (
     <motion.header
       ref={menuRef}
@@ -174,6 +269,80 @@ const Header = () => {
             </div>
           </motion.div>
 
+          {/* Search Bar */}
+          <div className="hidden md:flex items-center flex-1 max-w-md mx-8 relative search-container">
+            <div className="relative w-full">
+              <motion.div
+                className="relative"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <input
+                  ref={searchRef}
+                  type="text"
+                  placeholder="Search tools, libraries, resources..."
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  onFocus={() => setIsSearchOpen(true)}
+                  className="w-full px-4 py-2 pl-10 pr-4 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#08f9ff] focus:bg-gray-800/70 transition-all duration-300"
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </motion.div>
+
+              {/* Search Results Dropdown */}
+              {isSearchOpen && searchResults.length > 0 && (
+                <motion.div
+                  className="absolute top-full left-0 right-0 mt-2 bg-gray-900/95 backdrop-blur-md border border-gray-600/50 rounded-lg shadow-xl z-[10004] max-h-96 overflow-y-auto"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {searchResults.map((result, index) => (
+                    <motion.div
+                      key={index}
+                      className="px-4 py-3 hover:bg-gray-800/50 cursor-pointer border-b border-gray-700/50 last:border-b-0 transition-colors duration-200"
+                      onClick={() => handleSearchItemClick(result)}
+                      whileHover={{ backgroundColor: 'rgba(8, 249, 255, 0.1)' }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-white font-medium">{result.title}</h4>
+                            {result.url && (
+                              <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                            )}
+                          </div>
+                          <p className="text-gray-400 text-sm">{result.description}</p>
+                        </div>
+                        <span className="text-[#08f9ff] text-xs bg-[#08f9ff]/20 px-2 py-1 rounded ml-3">
+                          {result.category}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile Search Button */}
+          <motion.button
+            className="md:hidden w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-gray-800/50 transition-colors duration-200"
+            onClick={toggleSearch}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </motion.button>
+
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navLinks.map((link, index) => (
@@ -186,11 +355,11 @@ const Header = () => {
                     : 'text-gray-300 hover:text-white'
                 }`}
                 onClick={(e) => handleNavClick(e, link.href)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={isMobile ? {} : { scale: 1.05 }}
+                whileTap={isMobile ? {} : { scale: 0.95 }}
+                initial={isMobile ? {} : { opacity: 0, y: -20 }}
+                animate={isMobile ? {} : { opacity: 1, y: 0 }}
+                transition={isMobile ? {} : { duration: 0.3, delay: index * 0.1 }}
               >
                 {link.label}
                 {activeSection === link.id && (
@@ -210,8 +379,8 @@ const Header = () => {
               isMenuOpen ? 'bg-gradient-to-br from-[#08f9ff]/30 to-[#0066cc]/30 border border-[#08f9ff]/50 shadow-lg shadow-[#08f9ff]/20' : 'hover:bg-gradient-to-br hover:from-white/10 hover:to-white/5 hover:shadow-md'
             }`}
             onClick={toggleMenu}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.02 }}
+            whileTap={isMobile ? {} : { scale: 0.95 }}
+            whileHover={isMobile ? {} : { scale: 1.02 }}
           >
             <div className="flex flex-col justify-center items-center w-6 h-8">
               <motion.span
@@ -277,8 +446,8 @@ const Header = () => {
                   delay: isMenuOpen ? index * 0.1 + 0.1 : 0,
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
-                whileTap={{ scale: 0.98, x: 5 }}
-                whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                whileTap={isMobile ? {} : { scale: 0.98, x: 5 }}
+                whileHover={isMobile ? {} : { x: 8, transition: { duration: 0.2 } }}
               >
                 <span className="relative z-10">{link.label}</span>
                 {activeSection === link.id && (
@@ -295,6 +464,97 @@ const Header = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Mobile Search Overlay */}
+      {isSearchOpen && (
+        <motion.div
+          className="md:hidden fixed inset-0 bg-black/95 backdrop-blur-md z-[10005] flex flex-col"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="p-4 border-b border-gray-700/50">
+            <div className="flex items-center space-x-3">
+              <div className="relative flex-1">
+                <input
+                  ref={searchRef}
+                  type="text"
+                  placeholder="Search tools, libraries, resources..."
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className="w-full px-4 py-3 pl-10 pr-4 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#08f9ff] focus:bg-gray-800/70 transition-all duration-300"
+                  autoFocus
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+              <motion.button
+                className="w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-gray-800/50 transition-colors duration-200"
+                onClick={toggleSearch}
+                whileTap={{ scale: 0.95 }}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </motion.button>
+            </div>
+          </div>
+          
+          {/* Mobile Search Results */}
+          <div className="flex-1 overflow-y-auto p-4">
+            {searchResults.length > 0 ? (
+              <div className="space-y-3">
+                {searchResults.map((result, index) => (
+                  <motion.div
+                    key={index}
+                    className="p-4 bg-gray-800/30 rounded-lg border border-gray-700/50 cursor-pointer hover:bg-gray-800/50 transition-colors duration-200"
+                    onClick={() => handleSearchItemClick(result)}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="text-white font-medium">{result.title}</h4>
+                          {result.url && (
+                            <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          )}
+                        </div>
+                        <p className="text-gray-400 text-sm">{result.description}</p>
+                      </div>
+                      <span className="text-[#08f9ff] text-xs bg-[#08f9ff]/20 px-2 py-1 rounded ml-3">
+                        {result.category}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            ) : searchQuery.trim() !== '' ? (
+              <div className="text-center text-gray-400 mt-8">
+                <svg className="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <p>No results found for "{searchQuery}"</p>
+              </div>
+            ) : (
+              <div className="text-center text-gray-400 mt-8">
+                <svg className="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <p>Start typing to search...</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
