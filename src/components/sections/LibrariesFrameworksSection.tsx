@@ -7,7 +7,6 @@ import useMobile from '@/hooks/useMobile';
 
 const LibrariesFrameworksSection = () => {
   const [activeTab, setActiveTab] = useState('frontend');
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const isMobile = useMobile();
 
   const categories = {
@@ -391,8 +390,6 @@ const LibrariesFrameworksSection = () => {
                   scale: 1.01, 
                   y: -2
                 }}
-                onHoverStart={() => setHoveredItem(item.name)}
-                onHoverEnd={() => setHoveredItem(null)}
                 style={{
                   pointerEvents: 'auto'
                 }}

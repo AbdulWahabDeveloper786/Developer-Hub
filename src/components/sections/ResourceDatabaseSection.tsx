@@ -6,7 +6,7 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
 
 const ResourceDatabaseSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
 
   const categories = [
     { id: 'all', name: 'All Resources', icon: '📚' },

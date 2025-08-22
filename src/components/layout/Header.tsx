@@ -5,13 +5,21 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import useMobile from '@/hooks/useMobile';
 
+interface SearchItem {
+  title: string;
+  category: string;
+  section: string;
+  description: string;
+  url: string;
+}
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const isMobile = useMobile();
@@ -201,7 +209,7 @@ const Header = () => {
     setSearchResults(filtered.slice(0, 8)); // Limit to 8 results
   };
 
-  const handleSearchItemClick = (result: any) => {
+  const handleSearchItemClick = (result: SearchItem) => {
     setIsSearchOpen(false);
     setSearchQuery('');
     setSearchResults([]);
@@ -542,7 +550,7 @@ const Header = () => {
                 <svg className="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <p>No results found for "{searchQuery}"</p>
+                <p>No results found for &quot;{searchQuery}&quot;</p>
               </div>
             ) : (
               <div className="text-center text-gray-400 mt-8">

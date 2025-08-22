@@ -269,7 +269,7 @@ const AboutSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {cards.map((card, index) => (
+            {cards.map((card) => (
               <motion.div
                 key={card.title}
                 variants={cardVariants}

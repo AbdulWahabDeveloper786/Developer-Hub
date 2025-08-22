@@ -91,8 +91,7 @@ const ScrollReveal = ({
       transition: {
         duration: Math.min(duration, 0.4), // Cap duration for better performance
         delay,
-        type: 'tween' as const, // Use tween instead of spring for better performance
-        ease: [0.25, 0.46, 0.45, 0.94] // Custom easing for smooth animation
+        type: 'tween' as const // Use tween instead of spring for better performance
       }
     }
   };

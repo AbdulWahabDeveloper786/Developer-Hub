@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useMobile from '@/hooks/useMobile';
 
@@ -11,13 +11,13 @@ const Preloader = () => {
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useMobile();
 
-  const loadingTexts = [
+  const loadingTexts = useMemo(() => [
     'Initializing DevHub',
     'Loading Developer Tools',
     'Preparing Resources',
     'Setting up Playground',
     'Almost Ready'
-  ];
+  ], []);
 
   // Ensure component mounts properly
   useEffect(() => {

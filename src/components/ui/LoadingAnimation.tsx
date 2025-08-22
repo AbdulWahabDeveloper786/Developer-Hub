@@ -13,7 +13,7 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
   const [currentText, setCurrentText] = useState('Loading');
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const loadingTexts = ['Loading', 'Initializing', 'Setting up', 'Almost Ready', 'Complete'];
+  const loadingTexts = useMemo(() => ['Loading', 'Initializing', 'Setting up', 'Almost Ready', 'Complete'], []);
 
   // Generate floating particles with consistent positions
   const particles = useMemo(() => {
