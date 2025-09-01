@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useMobile from '@/hooks/useMobile';
 
 interface LoadingAnimationProps {
   onComplete?: () => void;
@@ -12,28 +13,21 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
   const [isVisible, setIsVisible] = useState(true);
   const [currentText, setCurrentText] = useState('Loading');
   const [isCompleted, setIsCompleted] = useState(false);
+  const isMobile = useMobile();
 
   const loadingTexts = useMemo(() => ['Loading', 'Initializing', 'Setting up', 'Almost Ready', 'Complete'], []);
 
-  // Generate floating particles with consistent positions
+  // Generate floating particles only for desktop
   const particles = useMemo(() => {
+    if (isMobile) return [];
+    
     // Use fixed positions to avoid hydration mismatch
     const fixedPositions = [
       { x: 30.23, y: 38.35, delay: 0.5 },
       { x: 36.85, y: 72.65, delay: 1.2 },
       { x: 21.74, y: 94.70, delay: 0.8 },
       { x: 39.80, y: 1.71, delay: 1.5 },
-      { x: 28.25, y: 6.45, delay: 0.3 },
-      { x: 10.81, y: 33.82, delay: 1.8 },
-      { x: 67.51, y: 69.83, delay: 0.9 },
-      { x: 52.38, y: 63.16, delay: 1.1 },
-      { x: 86.34, y: 20.10, delay: 0.7 },
-      { x: 64.83, y: 57.05, delay: 1.4 },
-      { x: 48.28, y: 4.88, delay: 0.6 },
-      { x: 7.65, y: 87.13, delay: 1.6 },
-      { x: 85.14, y: 57.01, delay: 0.4 },
-      { x: 62.77, y: 45.57, delay: 1.3 },
-      { x: 48.50, y: 80.53, delay: 1.0 }
+      { x: 28.25, y: 6.45, delay: 0.3 }
     ];
     
     return fixedPositions.map((pos, i) => ({
@@ -42,7 +36,7 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
       y: pos.y,
       delay: pos.delay,
     }));
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const progressInterval: NodeJS.Timeout = setInterval(() => {
@@ -52,29 +46,33 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
           setIsCompleted(true);
           setCurrentText('Complete');
           
-          // Wait for completion animation, then hide
+          // Much faster completion on mobile
+          const completionDelay = isMobile ? 300 : 1500;
+          const hideDelay = isMobile ? 200 : 800;
+          
           setTimeout(() => {
             setIsVisible(false);
             setTimeout(() => {
               onComplete?.();
-            }, 800);
-          }, 1500);
+            }, hideDelay);
+          }, completionDelay);
           
           return 100;
         }
         
-        // Smooth progression that guarantees reaching 100%
-        const increment = prev < 30 ? Math.random() * 8 + 3 :
-                         prev < 60 ? Math.random() * 6 + 2 :
-                         prev < 90 ? Math.random() * 4 + 1 :
-                         prev < 98 ? Math.random() * 2 + 0.5 :
+        // Faster progression on mobile
+        const baseIncrement = isMobile ? 15 : 5;
+        const increment = prev < 30 ? Math.random() * (baseIncrement * 1.6) + baseIncrement :
+                         prev < 60 ? Math.random() * (baseIncrement * 1.2) + (baseIncrement * 0.8) :
+                         prev < 90 ? Math.random() * baseIncrement + (baseIncrement * 0.4) :
+                         prev < 98 ? Math.random() * (baseIncrement * 0.4) + (baseIncrement * 0.2) :
                          100 - prev; // Ensure we reach exactly 100%
         
         return Math.min(prev + increment, 100);
       });
-    }, 80);
+    }, isMobile ? 40 : 80);
 
-    // Text animation
+    // Text animation - faster on mobile
     const textInterval: NodeJS.Timeout = setInterval(() => {
       setCurrentText(prev => {
         const currentIndex = loadingTexts.indexOf(prev);
@@ -83,7 +81,7 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
         }
         return prev;
       });
-    }, 1000);
+    }, isMobile ? 400 : 1000);
 
 
 
@@ -140,13 +138,13 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
             <motion.div
               className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-8 sm:mb-12"
               animate={{ 
-                rotate: isCompleted ? 0 : 360,
+                rotate: isCompleted ? 0 : (isMobile ? 0 : 360),
                 scale: isCompleted ? 1.2 : 1
               }}
               transition={{
                 rotate: {
-                  duration: 3,
-                  repeat: isCompleted ? 0 : Infinity,
+                  duration: isMobile ? 0 : 3,
+                  repeat: isCompleted ? 0 : (isMobile ? 0 : Infinity),
                   ease: "linear"
                 },
                 scale: {
@@ -208,12 +206,12 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
                 <motion.div
                   className="text-lg sm:text-2xl text-white font-bold"
                   animate={{ 
-                    rotate: isCompleted ? 0 : -360
+                    rotate: isCompleted ? 0 : (isMobile ? 0 : -360)
                   }}
                   transition={{
                     rotate: {
-                      duration: 4,
-                      repeat: isCompleted ? 0 : Infinity,
+                      duration: isMobile ? 0 : 4,
+                      repeat: isCompleted ? 0 : (isMobile ? 0 : Infinity),
                       ease: "linear"
                     }
                   }}

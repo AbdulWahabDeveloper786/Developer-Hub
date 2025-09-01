@@ -193,4 +193,45 @@
       width: 6px;
     }
   }
+  
+  /* Typed.js cursor styling - improved for smoother animation */
+  .typed-cursor {
+    opacity: 1;
+    animation: typedjsBlink 1s ease-in-out infinite;
+    color: #08f9ff;
+    font-weight: 700;
+    font-size: inherit;
+    line-height: inherit;
+    text-shadow: 0 0 15px rgba(8, 249, 255, 0.9), 0 0 30px rgba(8, 249, 255, 0.4);
+    display: inline-block;
+    margin-left: 3px;
+    vertical-align: baseline;
+    will-change: opacity;
+  }
+  
+  @keyframes typedjsBlink {
+    0%, 45% {
+      opacity: 1;
+    }
+    50%, 95% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Ensure the typed element has proper styling */
+  .typed-element {
+    position: relative;
+    display: inline-block;
+    min-height: 1.2em;
+    vertical-align: baseline;
+  }
+  
+  /* Fade out class for smooth transitions */
+  .typed-fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
 }

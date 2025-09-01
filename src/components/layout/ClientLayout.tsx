@@ -3,21 +3,28 @@
 import { useState, useEffect } from 'react';
 import LoadingAnimation from '@/components/ui/LoadingAnimation';
 import FloatingElements from '@/components/ui/FloatingElements';
+import useMobile from '@/hooks/useMobile';
 
 interface ClientLayoutProps {
   children: React.ReactNode;
 }
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
+  const isMobile = useMobile();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Always show loading animation on page load/refresh
-    // Remove the session storage check to ensure preloader always shows
-    setIsLoading(true);
-    setShowContent(false);
-  }, []);
+    // Skip loading animation on mobile devices for better performance
+    if (isMobile) {
+      setIsLoading(false);
+      setShowContent(true);
+    } else {
+      // Show loading animation on desktop
+      setIsLoading(true);
+      setShowContent(false);
+    }
+  }, [isMobile]);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);

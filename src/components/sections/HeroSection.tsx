@@ -17,35 +17,53 @@ const HeroSection = () => {
 
   useEffect(() => {
     let typed: InstanceType<typeof import('typed.js').default> | null = null;
+    let timeoutId: NodeJS.Timeout;
     
     const initTyped = async () => {
-      if (typedRef.current) {
-        const Typed = await loadTyped();
-        typed = new Typed(typedRef.current, {
-          strings: [
-            'All-in-One Developer Hub',
-            'Code Generators & Tools',
-            'API Documentation',
-            'Cheat Sheets & Guides',
-            'Resource Collections',
-            'Developer Utilities',
-            'Everything You Need'
-          ],
-          typeSpeed: isMobile ? 70 : 50, // Slower on mobile for better performance
-          backSpeed: isMobile ? 50 : 30,
-          backDelay: isMobile ? 2000 : 1500,
-          loop: true,
-          showCursor: true,
-          cursorChar: '|'
-        });
+      try {
+        if (typedRef.current) {
+          // Clear any existing content
+          typedRef.current.innerHTML = '';
+          
+          const Typed = await loadTyped();
+          typed = new Typed(typedRef.current, {
+            strings: [
+              'All-in-One Developer Hub',
+              'Code Generators & Tools',
+              'API Documentation',
+              'Cheat Sheets & Guides',
+              'Resource Collections',
+              'Developer Utilities',
+              'Everything You Need'
+            ],
+            typeSpeed: isMobile ? 60 : 40, // Smoother typing speed
+            backSpeed: isMobile ? 40 : 25, // Smoother backspacing
+            backDelay: isMobile ? 1800 : 1200, // Shorter delays for better flow
+            startDelay: 500, // Small delay before starting
+            loop: true,
+            showCursor: true,
+            cursorChar: '|',
+            autoInsertCss: false,
+            contentType: 'text', // Use text instead of html for better performance
+            smartBackspace: true, // Only backspace what doesn't match the previous string
+            fadeOut: false,
+            fadeOutClass: 'typed-fade-out',
+            fadeOutDelay: 500
+          });
+        }
+      } catch (error) {
+        console.error('Failed to initialize Typed.js:', error);
       }
     };
 
-    initTyped();
+    // Add a small delay to ensure DOM is ready
+    timeoutId = setTimeout(initTyped, 100);
     
     return () => {
+      clearTimeout(timeoutId);
       if (typed) {
         typed.destroy();
+        typed = null;
       }
     };
   }, [isMobile]);
@@ -126,7 +144,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <span ref={typedRef}></span>
+            <span ref={typedRef} className="typed-element"></span>
           </motion.div>
 
           {/* Description */}
