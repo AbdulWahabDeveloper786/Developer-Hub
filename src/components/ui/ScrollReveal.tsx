@@ -20,81 +20,89 @@ const ScrollReveal = ({
   children,
   direction = 'up',
   delay = 0,
-  duration = 0.3, // Reduced default duration
-  distance = 30, // Reduced default distance
+  duration = 0.2, // Further reduced for better performance
+  distance = 20, // Further reduced for smoother animations
   className = '',
-  triggerOnce = false,
+  triggerOnce = true, // Default to true for better performance
   scrollUpOnly = false
 }: ScrollRevealProps) => {
   const ref = useRef(null);
   const isMobile = useMobile();
-  const isInView = useInView(ref, { 
-    once: triggerOnce, 
-    margin: '-50px', // Reduced margin for earlier trigger
-    amount: 0.1 // Only need 10% of element visible
+  const isInView = useInView(ref, {
+    once: triggerOnce,
+    margin: '-30px 0px -30px 0px', // Reduced margin for earlier trigger
+    amount: 0.1 // Trigger when 10% is visible
   });
   const { scrollDirection } = useScrollDirection();
 
-  // On mobile, return static content without animations
+  // Disable complex animations on mobile for better performance
   if (isMobile) {
     return (
-      <div ref={ref} className={className}>
+      <motion.div 
+        className={className}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.15, type: 'tween' }}
+      >
         {children}
-      </div>
+      </motion.div>
     );
   }
 
-  // If scrollUpOnly is true, only animate when scrolling up
-  // Otherwise, animate when element comes into view regardless of scroll direction
-  const shouldAnimate = scrollUpOnly ? (isInView && scrollDirection === 'up') : isInView;
+  // Only animate when scrolling up if scrollUpOnly is true
+  const shouldAnimate = scrollUpOnly 
+    ? isInView && scrollDirection === 'up'
+    : isInView;
 
-  const getInitialState = () => {
+  // Simplified animation variants
+  const getVariants = () => {
+    const baseTransition = {
+      duration: Math.min(duration, 0.3),
+      delay,
+      type: 'tween' as const,
+      ease: 'easeOut' as const
+    };
+
     switch (direction) {
       case 'up':
-        return { opacity: 0, y: distance };
+        return {
+          hidden: { opacity: 0, y: distance },
+          visible: { opacity: 1, y: 0, transition: baseTransition }
+        };
       case 'down':
-        return { opacity: 0, y: -distance };
+        return {
+          hidden: { opacity: 0, y: -distance },
+          visible: { opacity: 1, y: 0, transition: baseTransition }
+        };
       case 'left':
-        return { opacity: 0, x: distance };
+        return {
+          hidden: { opacity: 0, x: distance },
+          visible: { opacity: 1, x: 0, transition: baseTransition }
+        };
       case 'right':
-        return { opacity: 0, x: -distance };
+        return {
+          hidden: { opacity: 0, x: -distance },
+          visible: { opacity: 1, x: 0, transition: baseTransition }
+        };
       case 'scale':
-        return { opacity: 0, scale: 0.8 };
+        return {
+          hidden: { opacity: 0, scale: 0.9 },
+          visible: { opacity: 1, scale: 1, transition: baseTransition }
+        };
       case 'rotate':
-        return { opacity: 0, rotate: 15, scale: 0.9 };
+        return {
+          hidden: { opacity: 0, rotate: -5, scale: 0.95 },
+          visible: { opacity: 1, rotate: 0, scale: 1, transition: baseTransition }
+        };
       default:
-        return { opacity: 0, y: distance };
+        return {
+          hidden: { opacity: 0, y: distance },
+          visible: { opacity: 1, y: 0, transition: baseTransition }
+        };
     }
   };
 
-  const getAnimateState = () => {
-    switch (direction) {
-      case 'up':
-      case 'down':
-        return { opacity: 1, y: 0 };
-      case 'left':
-      case 'right':
-        return { opacity: 1, x: 0 };
-      case 'scale':
-        return { opacity: 1, scale: 1 };
-      case 'rotate':
-        return { opacity: 1, rotate: 0, scale: 1 };
-      default:
-        return { opacity: 1, y: 0 };
-    }
-  };
-
-  const variants = {
-    hidden: getInitialState(),
-    visible: {
-      ...getAnimateState(),
-      transition: {
-        duration: Math.min(duration, 0.4), // Cap duration for better performance
-        delay,
-        type: 'tween' as const // Use tween instead of spring for better performance
-      }
-    }
-  };
+  const variants = getVariants();
 
   return (
     <motion.div

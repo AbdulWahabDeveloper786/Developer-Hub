@@ -383,12 +383,11 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <motion.button
-            className={`lg:hidden w-14 h-16 flex items-center justify-center text-white rounded-xl transition-all duration-300 relative z-[10002] p-0 ${
-              isMenuOpen ? 'bg-gradient-to-br from-[#08f9ff]/30 to-[#0066cc]/30 border border-[#08f9ff]/50 shadow-lg shadow-[#08f9ff]/20' : 'hover:bg-gradient-to-br hover:from-white/10 hover:to-white/5 hover:shadow-md'
+            className={`lg:hidden w-14 h-16 flex items-center justify-center text-white rounded-xl transition-all duration-200 relative z-[10002] p-0 ${
+              isMenuOpen ? 'bg-gradient-to-br from-[#08f9ff]/30 to-[#0066cc]/30 border border-[#08f9ff]/50' : 'hover:bg-white/10'
             }`}
             onClick={toggleMenu}
-            whileTap={isMobile ? {} : { scale: 0.95 }}
-            whileHover={isMobile ? {} : { scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <div className="flex flex-col justify-center items-center w-6 h-8">
               <motion.span
@@ -443,19 +442,17 @@ const Header = () => {
                     : 'text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-white/10 hover:via-white/5 hover:to-transparent hover:border-l-4 hover:border-white/30'
                 } border-l-4 border-transparent px-4`}
                 onClick={(e) => handleNavClick(e, link.href)}
-                initial={{ opacity: 0, x: -30, rotateY: -15 }}
+                initial={{ opacity: 0, x: -20 }}
                 animate={{ 
                   opacity: isMenuOpen ? 1 : 0, 
-                  x: isMenuOpen ? 0 : -30,
-                  rotateY: isMenuOpen ? 0 : -15
+                  x: isMenuOpen ? 0 : -20
                 }}
                 transition={{ 
-                  duration: 0.4, 
-                  delay: isMenuOpen ? index * 0.1 + 0.1 : 0,
-                  ease: [0.25, 0.46, 0.45, 0.94]
+                  duration: 0.2, 
+                  delay: isMenuOpen ? index * 0.05 : 0,
+                  ease: 'easeOut'
                 }}
-                whileTap={isMobile ? {} : { scale: 0.98, x: 5 }}
-                whileHover={isMobile ? {} : { x: 8, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.98 }}
               >
                 <span className="relative z-10">{link.label}</span>
                 {activeSection === link.id && (

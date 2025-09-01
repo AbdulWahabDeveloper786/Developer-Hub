@@ -3,46 +3,64 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Typed from 'typed.js';
+import dynamic from 'next/dynamic';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import useMobile from '@/hooks/useMobile';
+
+// Dynamic import for Typed.js to reduce initial bundle size
+const loadTyped = () => import('typed.js').then(mod => mod.default);
 
 const HeroSection = () => {
   const typedRef = useRef<HTMLSpanElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-
-  useEffect(() => {
-    if (typedRef.current) {
-      const typed = new Typed(typedRef.current, {
-        strings: [
-          'All-in-One Developer Hub',
-          'Code Generators & Tools',
-          'API Documentation',
-          'Cheat Sheets & Guides',
-          'Resource Collections',
-          'Developer Utilities',
-          'Everything You Need'
-        ],
-        typeSpeed: 50,
-        backSpeed: 30,
-        backDelay: 1500,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|'
-      });
-
-      return () => typed.destroy();
-    }
-  }, []);
+  const isMobile = useMobile();
 
   useEffect(() => {
+    let typed: any = null;
+    
+    const initTyped = async () => {
+      if (typedRef.current) {
+        const Typed = await loadTyped();
+        typed = new Typed(typedRef.current, {
+          strings: [
+            'All-in-One Developer Hub',
+            'Code Generators & Tools',
+            'API Documentation',
+            'Cheat Sheets & Guides',
+            'Resource Collections',
+            'Developer Utilities',
+            'Everything You Need'
+          ],
+          typeSpeed: isMobile ? 70 : 50, // Slower on mobile for better performance
+          backSpeed: isMobile ? 50 : 30,
+          backDelay: isMobile ? 2000 : 1500,
+          loop: true,
+          showCursor: true,
+          cursorChar: '|'
+        });
+      }
+    };
+
+    initTyped();
+    
+    return () => {
+      if (typed) {
+        typed.destroy();
+      }
+    };
+  }, [isMobile]);
+
+  // Disable mouse tracking on mobile for better performance
+  useEffect(() => {
+    if (isMobile) return;
+    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isMobile]);
 
 
 
@@ -139,114 +157,45 @@ Your one-stop destination for everything development! No more endless Google sea
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="relative text-center p-4 rounded-xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm border border-white/20 hover:border-[#08f9ff]/70 transition-all duration-500 group overflow-hidden"
-                whileHover={{ 
-                  scale: 1.08, 
-                  y: -8,
-                  rotateY: 5,
-                  rotateX: 5,
-                  z: 50
+                className="relative text-center p-4 rounded-xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm border border-white/20 hover:border-[#08f9ff]/70 transition-all duration-300 group overflow-hidden"
+                whileHover={isMobile ? {} : { 
+                  scale: 1.02, 
+                  y: -2
                 }}
-                transition={{ 
-                  duration: 0.4,
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 20
-                }}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  perspective: '1000px'
+                transition={isMobile ? {} : { 
+                  duration: 0.2,
+                  type: "tween",
+                  ease: "easeOut"
                 }}
               >
-                {/* 3D Background Glow */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-[#08f9ff]/20 via-transparent to-[#0066cc]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  animate={{
-                    background: [
-                      'linear-gradient(135deg, rgba(8,249,255,0.2), transparent, rgba(0,102,204,0.2))',
-                      'linear-gradient(225deg, rgba(0,102,204,0.2), transparent, rgba(8,249,255,0.2))',
-                      'linear-gradient(315deg, rgba(8,249,255,0.2), transparent, rgba(0,102,204,0.2))'
-                    ]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'linear'
-                  }}
-                />
+                {/* Simplified Background Glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#08f9ff]/10 via-transparent to-[#0066cc]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                {/* Floating Particles */}
-                {[...Array(3)].map((_, particleIndex) => (
-                  <motion.div
-                    key={particleIndex}
-                    className="absolute w-1 h-1 bg-[#08f9ff] rounded-full opacity-0 group-hover:opacity-100"
-                    style={{
-                      left: `${20 + particleIndex * 30}%`,
-                      top: `${20 + particleIndex * 20}%`
-                    }}
-                    animate={{
-                      y: [-10, -20, -10],
-                      x: [-5, 5, -5],
-                      opacity: [0, 1, 0],
-                      scale: [0, 1, 0]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: particleIndex * 0.3,
-                      ease: 'easeInOut'
-                    }}
-                  />
-                ))}
-                
-                {/* 3D Icon Container */}
+                {/* Icon Container */}
                 <motion.div 
-                  className="relative z-10 text-3xl mb-3 transform-gpu"
-                  whileHover={{
-                    rotateY: 360,
-                    scale: 1.2
+                  className="relative z-10 text-3xl mb-3"
+                  whileHover={isMobile ? {} : {
+                    scale: 1.1
                   }}
-                  transition={{
-                    duration: 0.8,
-                    type: "spring" as const
-                  }}
-                  style={{
-                    transformStyle: 'preserve-3d'
+                  transition={isMobile ? {} : {
+                    duration: 0.2,
+                    type: "tween",
+                    ease: "easeOut"
                   }}
                 >
-                  <motion.div
-                    className="inline-block"
-                    animate={{
-                      textShadow: [
-                        '0 0 10px rgba(8,249,255,0.5)',
-                        '0 0 20px rgba(8,249,255,0.8)',
-                        '0 0 10px rgba(8,249,255,0.5)'
-                      ]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: 'easeInOut'
-                    }}
-                  >
+                  <div className="inline-block text-[#08f9ff]">
                     {feature.icon}
-                  </motion.div>
+                  </div>
                 </motion.div>
                 
                 {/* Content */}
                 <div className="relative z-10">
-                  <motion.div 
-                    className="text-white font-semibold text-sm mb-1 group-hover:text-[#08f9ff] transition-colors duration-300"
-                    whileHover={{ scale: 1.05 }}
-                  >
+                  <div className="text-white font-semibold text-sm mb-1 group-hover:text-[#08f9ff] transition-colors duration-300">
                     {feature.label}
-                  </motion.div>
-                  <motion.div 
-                    className="text-gray-400 text-xs group-hover:text-gray-300 transition-colors duration-300"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    {feature.desc}
-                  </motion.div>
+                  </div>
+                  <div className="text-gray-400 text-xs group-hover:text-gray-300 transition-colors duration-300">
+                     {feature.desc}
+                   </div>
                 </div>
                 
                 {/* 3D Border Effect */}

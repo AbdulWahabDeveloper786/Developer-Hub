@@ -261,21 +261,21 @@ const LibrariesFrameworksSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.05, // Reduced stagger for faster loading
+        type: 'tween' as const
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.9 },
+    hidden: { opacity: 0, y: 10 }, // Reduced movement
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        duration: 0.5,
-        type: 'spring' as const,
-        stiffness: 100
+        duration: 0.3, // Faster animation
+        type: 'tween' as const,
+        ease: 'easeOut' as const
       }
     }
   };
@@ -289,27 +289,26 @@ const LibrariesFrameworksSection = () => {
       transition={isMobile ? {} : { duration: 1 }}
       viewport={{ once: true }}
     >
-      {/* Background Particles - Disabled on mobile */}
+      {/* Background Particles - Simplified for better performance */}
       {!isMobile && (
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(8)].map((_, i) => ( // Reduced from 20 to 8 particles
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-[#08f9ff] rounded-full"
+              className="absolute w-1 h-1 bg-[#08f9ff] rounded-full opacity-30"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`
               }}
               animate={{
-                y: [0, -100, 0],
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0]
+                y: [0, -50, 0], // Reduced movement range
+                opacity: [0.3, 0.8, 0.3] // Less opacity variation
               }}
               transition={{
-                duration: 4 + Math.random() * 2,
+                duration: 15 + i * 2, // Slower, less frequent updates
                 repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "easeInOut"
+                ease: 'linear',
+                repeatType: 'loop'
               }}
             />
           ))}
@@ -429,7 +428,7 @@ const LibrariesFrameworksSection = () => {
                         className="h-full bg-gradient-to-r from-[#08f9ff] to-[#0066cc] rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${item.popularity}%` }}
-                        transition={{ duration: 1, delay: index * 0.1 }}
+                        transition={{ duration: 0.6, delay: index * 0.05, type: 'tween', ease: 'easeOut' }}
                         viewport={{ once: true }}
                       />
                     </div>
@@ -445,16 +444,12 @@ const LibrariesFrameworksSection = () => {
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {item.tags.map((tag, tagIndex) => (
-                    <motion.span
+                    <span
                       key={tag}
-                      className="text-xs bg-gray-700/50 text-gray-300 px-2 py-1 rounded group-hover:bg-[#08f9ff]/20 group-hover:text-[#08f9ff] transition-colors"
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: tagIndex * 0.1 }}
-                      viewport={{ once: true }}
+                      className="text-xs bg-gray-700/50 text-gray-300 px-2 py-1 rounded group-hover:bg-[#08f9ff]/20 group-hover:text-[#08f9ff] transition-colors duration-200"
                     >
                       {tag}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
 

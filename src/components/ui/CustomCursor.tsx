@@ -1,76 +1,80 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import useMobile from '@/hooks/useMobile';
 
 const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useMobile();
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>();
+  const lastUpdateTime = useRef<number>(0);
 
-  useEffect(() => {
-    // Check if device is mobile
-    const checkMobile = () => {
-      const isMobileDevice = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      setIsMobile(isMobileDevice);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
+  // Highly optimized mouse position update using direct DOM manipulation
+  const updateMousePosition = useCallback((e: MouseEvent) => {
+    const now = performance.now();
+    // Throttle to 60fps max
+    if (now - lastUpdateTime.current < 16) return;
+    
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+    
+    rafRef.current = requestAnimationFrame(() => {
+      if (cursorRef.current) {
+        // Use CSS transform for better performance
+        cursorRef.current.style.transform = `translate3d(${e.clientX - 8}px, ${e.clientY - 8}px, 0)`;
+        lastUpdateTime.current = now;
+      }
+    });
   }, []);
 
   useEffect(() => {
     // Don't initialize cursor on mobile devices
     if (isMobile) return;
 
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const handleMouseDown = () => {
+      setIsClicking(true);
+      if (cursorRef.current) {
+        cursorRef.current.style.transform += ' scale(0.8)';
+      }
+    };
+    
+    const handleMouseUp = () => {
+      setIsClicking(false);
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = cursorRef.current.style.transform.replace(' scale(0.8)', '');
+      }
     };
 
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
+    // Simplified hover detection with better performance
+    const handleMouseOver = (e: Event) => {
+      const target = e.target as Element;
+      if (target.closest('a, button, [role="button"], .cursor-pointer, input, textarea, select')) {
+        setIsHovering(true);
+        if (cursorRef.current) {
+          cursorRef.current.style.transform += ' scale(1.5)';
+        }
+      }
+    };
 
-    // Add event listeners
-    document.addEventListener('mousemove', updateMousePosition);
+    const handleMouseOut = (e: Event) => {
+      const target = e.target as Element;
+      if (target.closest('a, button, [role="button"], .cursor-pointer, input, textarea, select')) {
+        setIsHovering(false);
+        if (cursorRef.current) {
+          cursorRef.current.style.transform = cursorRef.current.style.transform.replace(' scale(1.5)', '');
+        }
+      }
+    };
+
+    // Add event listeners with passive option for better performance
+    document.addEventListener('mousemove', updateMousePosition, { passive: true });
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
-
-    // Function to add hover listeners to interactive elements
-    const addHoverListeners = () => {
-      const interactiveElements = document.querySelectorAll('a, button, [role="button"], .cursor-pointer, input, textarea, select, nav a, .nav-link, [data-scroll-to], .scroll-to-top');
-      interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', handleMouseEnter);
-        el.addEventListener('mouseleave', handleMouseLeave);
-      });
-      return interactiveElements;
-    };
-
-    // Initial setup
-    let interactiveElements = addHoverListeners();
-
-    // Observer to watch for new elements
-    const observer = new MutationObserver(() => {
-      // Remove old listeners
-      interactiveElements.forEach(el => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
-      // Add new listeners
-      interactiveElements = addHoverListeners();
-    });
-
-    // Start observing
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
+    document.addEventListener('mouseover', handleMouseOver, { passive: true });
+    document.addEventListener('mouseout', handleMouseOut, { passive: true });
 
     // Hide default cursor with less aggressive approach
     document.documentElement.style.cursor = 'none';
@@ -92,16 +96,16 @@ const CustomCursor = () => {
     document.head.appendChild(style);
 
     return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      
       document.removeEventListener('mousemove', updateMousePosition);
       document.removeEventListener('mousedown', handleMouseDown);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
       
-      interactiveElements.forEach(el => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
-      
-      observer.disconnect();
       document.documentElement.style.cursor = 'auto';
       document.body.style.cursor = 'auto';
       
@@ -118,80 +122,15 @@ const CustomCursor = () => {
   }
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 50 }}>
-      {/* Main Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-[#08f9ff] rounded-full pointer-events-none"
-        style={{ zIndex: 53, position: 'fixed' }}
-        animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isClicking ? 0.8 : isHovering ? 1.5 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5
-        }}
-      />
-
-      {/* Secondary Cursor (Larger, slower) */}
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border-2 border-[#08f9ff] rounded-full pointer-events-none opacity-50"
-        style={{ zIndex: 52, position: 'fixed' }}
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isClicking ? 0.5 : isHovering ? 2 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 15,
-          mass: 0.8
-        }}
-      />
-
-      {/* Third Cursor (Largest, slowest) */}
-      <motion.div
-        className="fixed top-0 left-0 w-12 h-12 border border-[#08f9ff] rounded-full pointer-events-none opacity-20"
-        style={{ zIndex: 51, position: 'fixed' }}
-        animate={{
-          x: mousePosition.x - 24,
-          y: mousePosition.y - 24,
-          scale: isClicking ? 0.3 : isHovering ? 2.5 : 1,
-        }}
-        transition={{
-          type: "spring" as const,
-          stiffness: 50,
-          damping: 10,
-          mass: 1.2
-        }}
-      />
-
-      {/* Click Effect */}
-      {isClicking && (
-        <motion.div
-          className="fixed top-0 left-0 w-6 h-6 border-2 border-[#08f9ff] rounded-full pointer-events-none"
-          style={{ zIndex: 54, position: 'fixed' }}
-          initial={{
-            x: mousePosition.x - 12,
-            y: mousePosition.y - 12,
-            scale: 0,
-            opacity: 1
-          }}
-          animate={{
-            scale: 3,
-            opacity: 0
-          }}
-          transition={{
-            duration: 0.3,
-            ease: "easeOut"
-          }}
-        />
-      )}
-    </div>
+    <div
+      ref={cursorRef}
+      className="fixed top-0 left-0 w-4 h-4 bg-[#08f9ff] rounded-full pointer-events-none z-[10002]"
+      style={{
+        transform: 'translate3d(-8px, -8px, 0)',
+        transition: 'transform 0.1s ease-out',
+        willChange: 'transform'
+      }}
+    />
   );
 };
 

@@ -142,18 +142,21 @@ const FrameworksSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: isMobile ? 0.02 : 0.05, // Faster stagger for mobile
+        type: 'tween'
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: isMobile ? 5 : 10 }, // Reduced movement on mobile
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5
+        duration: isMobile ? 0.2 : 0.3, // Faster on mobile
+        type: 'tween',
+        ease: 'easeOut'
       }
     }
   };
@@ -226,9 +229,9 @@ const FrameworksSection = () => {
               >
                 <Link href={framework.url} target="_blank" rel="noopener noreferrer">
                   <motion.div
-                    className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 h-full border border-gray-700 hover:border-[#08f9ff]/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#08f9ff]/20 overflow-hidden"
-                    whileHover={isMobile ? {} : { y: -5 }}
-                    transition={isMobile ? {} : { duration: 0.3 }}
+                    className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 h-full border border-gray-700 hover:border-[#08f9ff]/50 transition-all duration-200 group-hover:shadow-lg group-hover:shadow-[#08f9ff]/20 overflow-hidden"
+                    whileHover={isMobile ? {} : { y: -3 }}
+                    transition={isMobile ? {} : { duration: 0.2, type: 'tween' }}
                   >
                     {/* Background Pattern */}
                     <div className="absolute inset-0 opacity-10">
