@@ -2,7 +2,7 @@
 const nextConfig = {
   // Enable experimental features for better performance
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Commented out for Vercel compatibility
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
   
@@ -31,8 +31,8 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   
-  // Output configuration for better caching
-  output: 'standalone',
+  // Output configuration removed for Vercel compatibility
+  // output: 'standalone', // Only needed for Docker deployments
 };
 
 module.exports = nextConfig;

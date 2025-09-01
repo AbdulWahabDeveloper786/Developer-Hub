@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
+
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import useMobile from '@/hooks/useMobile';
 
@@ -16,7 +16,7 @@ const HeroSection = () => {
   const isMobile = useMobile();
 
   useEffect(() => {
-    let typed: any = null;
+    let typed: InstanceType<typeof import('typed.js').default> | null = null;
     
     const initTyped = async () => {
       if (typedRef.current) {

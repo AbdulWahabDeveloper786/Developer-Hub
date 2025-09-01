@@ -142,22 +142,16 @@ const FrameworksSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.02 : 0.05, // Faster stagger for mobile
-        type: 'tween'
+        staggerChildren: isMobile ? 0.02 : 0.05 // Faster stagger for mobile
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: isMobile ? 5 : 10 }, // Reduced movement on mobile
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        duration: isMobile ? 0.2 : 0.3, // Faster on mobile
-        type: 'tween',
-        ease: 'easeOut'
-      }
+      y: 0
     }
   };
 

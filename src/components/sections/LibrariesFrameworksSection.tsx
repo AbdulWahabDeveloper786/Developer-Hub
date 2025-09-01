@@ -261,8 +261,7 @@ const LibrariesFrameworksSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, // Reduced stagger for faster loading
-        type: 'tween' as const
+        staggerChildren: 0.05 // Reduced stagger for faster loading
       }
     }
   };
@@ -271,12 +270,7 @@ const LibrariesFrameworksSection = () => {
     hidden: { opacity: 0, y: 10 }, // Reduced movement
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3, // Faster animation
-        type: 'tween' as const,
-        ease: 'easeOut' as const
-      }
+      y: 0
     }
   };
 
@@ -443,7 +437,7 @@ const LibrariesFrameworksSection = () => {
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {item.tags.map((tag, tagIndex) => (
+                  {item.tags.map((tag) => (
                     <span
                       key={tag}
                       className="text-xs bg-gray-700/50 text-gray-300 px-2 py-1 rounded group-hover:bg-[#08f9ff]/20 group-hover:text-[#08f9ff] transition-colors duration-200"

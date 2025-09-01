@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import useMobile from '@/hooks/useMobile';
 
 const CustomCursor = () => {
-  const [isHovering, setIsHovering] = useState(false);
-  const [isClicking, setIsClicking] = useState(false);
+
   const isMobile = useMobile();
   const cursorRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | null>(null);
   const lastUpdateTime = useRef<number>(0);
 
   // Highly optimized mouse position update using direct DOM manipulation
@@ -35,14 +34,12 @@ const CustomCursor = () => {
     if (isMobile) return;
 
     const handleMouseDown = () => {
-      setIsClicking(true);
       if (cursorRef.current) {
         cursorRef.current.style.transform += ' scale(0.8)';
       }
     };
     
     const handleMouseUp = () => {
-      setIsClicking(false);
       if (cursorRef.current) {
         cursorRef.current.style.transform = cursorRef.current.style.transform.replace(' scale(0.8)', '');
       }
@@ -52,7 +49,6 @@ const CustomCursor = () => {
     const handleMouseOver = (e: Event) => {
       const target = e.target as Element;
       if (target.closest('a, button, [role="button"], .cursor-pointer, input, textarea, select')) {
-        setIsHovering(true);
         if (cursorRef.current) {
           cursorRef.current.style.transform += ' scale(1.5)';
         }
@@ -62,7 +58,6 @@ const CustomCursor = () => {
     const handleMouseOut = (e: Event) => {
       const target = e.target as Element;
       if (target.closest('a, button, [role="button"], .cursor-pointer, input, textarea, select')) {
-        setIsHovering(false);
         if (cursorRef.current) {
           cursorRef.current.style.transform = cursorRef.current.style.transform.replace(' scale(1.5)', '');
         }
