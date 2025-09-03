@@ -342,9 +342,10 @@ const Header = () => {
 
           {/* Mobile Search Button */}
           <motion.button
-            className="md:hidden w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-gray-800/50 transition-colors duration-200"
+            className="md:hidden w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-gray-800/50 transition-colors duration-200 relative z-[10009]"
             onClick={toggleSearch}
             whileTap={{ scale: 0.95 }}
+            style={{ isolation: 'isolate' }}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -383,13 +384,17 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <motion.button
-            className={`lg:hidden w-14 h-16 flex items-center justify-center text-white rounded-xl transition-all duration-200 relative z-[10002] p-0 ${
-              isMenuOpen ? 'bg-gradient-to-br from-[#08f9ff]/30 to-[#0066cc]/30 border border-[#08f9ff]/50' : 'hover:bg-white/10'
+            className={`lg:hidden w-14 h-16 flex items-center justify-center text-white rounded-xl transition-all duration-200 relative z-[10010] p-0 ${
+              isMenuOpen 
+                ? 'bg-gradient-to-br from-[#08f9ff]/20 to-[#0066cc]/20 border border-[#08f9ff]/50 shadow-lg shadow-[#08f9ff]/20' 
+                : 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-600/50 hover:border-[#08f9ff]/50 hover:shadow-lg hover:shadow-[#08f9ff]/20'
             }`}
             onClick={toggleMenu}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            style={{ isolation: 'isolate' }}
           >
-            <div className="flex flex-col justify-center items-center w-6 h-8">
+            <div className="relative w-6 h-6 flex flex-col justify-center items-center">
               <motion.span
                 className="w-6 h-0.5 bg-white block absolute rounded-full"
                 animate={{
@@ -422,7 +427,8 @@ const Header = () => {
 
       {/* Mobile Navigation - Moved outside nav container for full width */}
       <motion.div
-        className="lg:hidden overflow-hidden fixed left-0 right-0 top-20 z-[10003] bg-gradient-to-b from-black/98 via-black/95 to-black/90 backdrop-blur-xl border-t border-[#08f9ff]/20"
+        className="lg:hidden overflow-hidden fixed left-0 right-0 top-20 z-[10008] bg-gradient-to-b from-black/98 via-black/95 to-black/90 backdrop-blur-xl border-t border-[#08f9ff]/20"
+        style={{ isolation: 'isolate' }}
         initial={{ height: 0, opacity: 0 }}
         animate={{ 
           height: isMenuOpen ? 'auto' : 0,
@@ -473,7 +479,8 @@ const Header = () => {
       {/* Mobile Search Overlay */}
       {isSearchOpen && (
         <motion.div
-          className="md:hidden fixed inset-0 bg-black/95 backdrop-blur-md z-[10005] flex flex-col"
+          className="md:hidden fixed inset-0 bg-black/95 backdrop-blur-md z-[10011] flex flex-col"
+          style={{ isolation: 'isolate' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -498,9 +505,10 @@ const Header = () => {
                 </div>
               </div>
               <motion.button
-                className="w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-gray-800/50 transition-colors duration-200"
+                className="w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-gray-800/50 transition-colors duration-200 relative z-[10012]"
                 onClick={toggleSearch}
                 whileTap={{ scale: 0.95 }}
+                style={{ isolation: 'isolate' }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
