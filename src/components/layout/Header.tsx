@@ -384,44 +384,52 @@ const Header = () => {
 
 {/* Mobile Menu Button */}
 <motion.button
-  className={`lg:hidden w-14 h-14 flex flex-col items-center justify-center text-white rounded-xl transition-all duration-200 relative z-[10010] pt-2 leading-tight ${
+  className={`lg:hidden w-12 h-12 flex items-center justify-center text-white rounded-xl transition-all duration-300 relative z-[10010] group ${
     isMenuOpen
-      ? 'bg-gradient-to-br from-[#08f9ff]/20 to-[#0066cc]/20 border border-[#08f9ff]/50 shadow-lg shadow-[#08f9ff]/20'
-      : 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-600/50 hover:border-[#08f9ff]/50 hover:shadow-lg hover:shadow-[#08f9ff]/20'
+      ? 'bg-gradient-to-br from-[#08f9ff]/30 to-[#0066cc]/30 border-2 border-[#08f9ff] shadow-xl shadow-[#08f9ff]/30'
+      : 'bg-gradient-to-br from-gray-800/90 to-gray-900/90 border-2 border-gray-600/40 hover:border-[#08f9ff]/60 hover:shadow-lg hover:shadow-[#08f9ff]/20 hover:bg-gradient-to-br hover:from-gray-700/90 hover:to-gray-800/90'
   }`}
   onClick={toggleMenu}
-  whileTap={{ scale: 0.95 }}
-  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.92 }}
+  whileHover={{ scale: 1.05 }}
   style={{ isolation: 'isolate' }}
 >
-  <div className="relative w-10 h-30 flex flex-col justify-center items-center mb-1">
+  <div className="relative w-6 h-5 flex flex-col justify-between">
     <motion.span
-      className="w-5 h-5 bg-white block absolute rounded-full"
+      className={`w-full h-0.5 block rounded-full transition-colors duration-300 ${
+        isMenuOpen ? 'bg-[#08f9ff]' : 'bg-white group-hover:bg-[#08f9ff]'
+      }`}
       animate={{
-        rotate: isMenuOpen ? -20 : 0,
-        y: isMenuOpen ? 0 : -4,
+        rotate: isMenuOpen ? 45 : 0,
+        y: isMenuOpen ? 8 : 0,
+        originX: 0.5,
+        originY: 0.5
       }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
     />
     <motion.span
-      className="w-5 h-5 bg-white block absolute rounded-full"
+      className={`w-full h-0.5 block rounded-full transition-colors duration-300 ${
+        isMenuOpen ? 'bg-[#08f9ff]' : 'bg-white group-hover:bg-[#08f9ff]'
+      }`}
       animate={{
         opacity: isMenuOpen ? 0 : 1,
-        y: 0,
         scaleX: isMenuOpen ? 0 : 1,
       }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      transition={{ duration: 0.2, ease: 'easeInOut' }}
     />
     <motion.span
-      className="w-5 h-5 bg-white block absolute rounded-full"
+      className={`w-full h-0.5 block rounded-full transition-colors duration-300 ${
+        isMenuOpen ? 'bg-[#08f9ff]' : 'bg-white group-hover:bg-[#08f9ff]'
+      }`}
       animate={{
         rotate: isMenuOpen ? -45 : 0,
-        y: isMenuOpen ? 0 : 4,
+        y: isMenuOpen ? -8 : 0,
+        originX: 0.5,
+        originY: 0.5
       }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
     />
   </div>
-  <span className="text-[#08f9ff] font-medium">Menu</span>
 </motion.button>
         </div>
       </nav>
