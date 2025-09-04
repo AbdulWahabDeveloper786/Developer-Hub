@@ -29,12 +29,8 @@ const HeroSection = () => {
           typed = new Typed(typedRef.current, {
             strings: [
               'All-in-One Developer Hub',
-              'Code Generators & Tools',
-              'API Documentation',
-              'Cheat Sheets & Guides',
-              'Resource Collections',
-              'Developer Utilities',
-              'Everything You Need'
+              'Everything You Need',
+              'Libraries & Frameworks'
             ],
             typeSpeed: isMobile ? 60 : 40, // Smoother typing speed
             backSpeed: isMobile ? 40 : 25, // Smoother backspacing

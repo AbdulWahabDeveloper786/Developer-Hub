@@ -166,6 +166,7 @@ const Header = () => {
 
   // Search data - this would typically come from a database or API
   const searchData = [
+    // Libraries & Frameworks
     { title: 'React', category: 'Framework', section: 'libraries-frameworks', description: 'A JavaScript library for building user interfaces', url: 'https://react.dev' },
     { title: 'Next.js', category: 'Framework', section: 'libraries-frameworks', description: 'The React Framework for Production', url: 'https://nextjs.org' },
     { title: 'Tailwind CSS', category: 'CSS Framework', section: 'libraries-frameworks', description: 'Utility-first CSS framework', url: 'https://tailwindcss.com' },
@@ -184,13 +185,85 @@ const Header = () => {
     { title: 'Popmotion', category: 'Animation Library', section: 'libraries-frameworks', description: 'Simple animation libraries for delightful user interfaces', url: 'https://popmotion.io' },
     { title: 'React Spring', category: 'Animation Library', section: 'libraries-frameworks', description: 'Spring-physics based animation library for React', url: 'https://react-spring.dev' },
     { title: 'React Transition Group', category: 'Animation Library', section: 'libraries-frameworks', description: 'Transition components for React', url: 'https://reactcommunity.org/react-transition-group' },
+    
+    // Tools & Platforms
     { title: 'GitHub', category: 'Platform', section: 'tools', description: 'Code hosting platform for version control and collaboration', url: 'https://github.com' },
     { title: 'CodePen', category: 'Tool', section: 'tools', description: 'Online code editor and playground', url: 'https://codepen.io' },
-    { title: 'Stack Overflow', category: 'Resource', section: 'resources', description: 'Q&A platform for developers', url: 'https://stackoverflow.com' },
-    { title: 'MDN Web Docs', category: 'Resource', section: 'resources', description: 'Web development documentation', url: 'https://developer.mozilla.org' },
     { title: 'Vercel', category: 'Platform', section: 'tools', description: 'Frontend deployment platform', url: 'https://vercel.com' },
     { title: 'Netlify', category: 'Platform', section: 'tools', description: 'Web development platform', url: 'https://netlify.com' },
-    { title: 'Figma', category: 'Design Tool', section: 'tools', description: 'Collaborative interface design tool', url: 'https://figma.com' }
+    { title: 'Figma', category: 'Design Tool', section: 'tools', description: 'Collaborative interface design tool', url: 'https://figma.com' },
+    
+    // Resources from ResourceDatabaseSection
+    { title: 'React Documentation', category: 'Documentation', section: 'resources', description: 'Official React documentation with guides, API reference, and tutorials', url: 'https://react.dev' },
+    { title: 'MDN Web Docs', category: 'Documentation', section: 'resources', description: 'Comprehensive web development documentation by Mozilla', url: 'https://developer.mozilla.org' },
+    { title: 'Node.js Documentation', category: 'Documentation', section: 'resources', description: 'Official Node.js documentation and guides', url: 'https://nodejs.org/docs' },
+    { title: 'Express.js', category: 'Framework', section: 'resources', description: 'Fast, unopinionated web framework for Node.js', url: 'https://expressjs.com' },
+    { title: 'MongoDB Documentation', category: 'Database', section: 'resources', description: 'NoSQL database documentation and tutorials', url: 'https://docs.mongodb.com' },
+    { title: 'PostgreSQL Documentation', category: 'Database', section: 'resources', description: 'Advanced open source relational database', url: 'https://www.postgresql.org/docs' },
+    { title: 'React Native', category: 'Framework', section: 'resources', description: 'Build mobile apps using React', url: 'https://reactnative.dev' },
+    { title: 'Flutter Documentation', category: 'Framework', section: 'resources', description: 'Google\'s UI toolkit for building natively compiled applications', url: 'https://flutter.dev/docs' },
+    { title: 'Docker Documentation', category: 'Platform', section: 'resources', description: 'Containerization platform documentation', url: 'https://docs.docker.com' },
+    { title: 'Kubernetes Documentation', category: 'Platform', section: 'resources', description: 'Container orchestration platform', url: 'https://kubernetes.io/docs' },
+    { title: 'AWS Documentation', category: 'Cloud', section: 'resources', description: 'Amazon Web Services documentation and guides', url: 'https://docs.aws.amazon.com' },
+    { title: 'Dribbble', category: 'Inspiration', section: 'resources', description: 'Design inspiration and portfolio platform', url: 'https://dribbble.com' },
+    { title: 'Unsplash', category: 'Assets', section: 'resources', description: 'Free high-quality photos for your projects', url: 'https://unsplash.com' },
+    { title: 'freeCodeCamp', category: 'Course', section: 'resources', description: 'Free coding bootcamp with certifications', url: 'https://www.freecodecamp.org' },
+    { title: 'Codecademy', category: 'Course', section: 'resources', description: 'Interactive coding lessons and projects', url: 'https://www.codecademy.com' },
+    { title: 'YouTube Dev Channels', category: 'Video', section: 'resources', description: 'Curated list of best development YouTube channels', url: '#' },
+    { title: 'Stack Overflow', category: 'Resource', section: 'resources', description: 'Q&A platform for developers', url: 'https://stackoverflow.com' },
+    
+    // Libraries from LibrariesSection
+    { title: 'Bootstrap 5', category: 'CSS Framework', section: 'libraries-frameworks', description: 'Popular CSS framework', url: 'https://getbootstrap.com/' },
+    { title: 'Google Fonts', category: 'CSS Library', section: 'libraries-frameworks', description: 'Web font library', url: 'https://fonts.google.com/' },
+    { title: 'Coolors', category: 'Design Tool', section: 'libraries-frameworks', description: 'Color palette generator', url: 'https://coolors.co/' },
+    { title: 'UI Verse', category: 'UI Library', section: 'libraries-frameworks', description: 'Open-source UI elements', url: 'https://uiverse.io/' },
+    { title: 'D3.js', category: 'JavaScript Library', section: 'libraries-frameworks', description: 'Data visualization library', url: 'https://d3js.org/' },
+    { title: 'Animate.css', category: 'Animation Library', section: 'libraries-frameworks', description: 'CSS animation library', url: 'https://animate.style/' },
+    { title: 'Swiper', category: 'UI Library', section: 'libraries-frameworks', description: 'Modern touch slider', url: 'https://swiperjs.com/' },
+    { title: 'Particles.js', category: 'Animation Library', section: 'libraries-frameworks', description: 'Lightweight particle animation', url: 'https://vincentgarreau.com/particles.js/' },
+    { title: 'Typed.js', category: 'Animation Library', section: 'libraries-frameworks', description: 'Typing animation library', url: 'https://mattboldt.com/demos/typed-js/' },
+    
+    // Tools from ToolsSection
+    { title: 'DeepSeek AI', category: 'AI Tool', section: 'tools', description: 'Advanced AI assistant for coding and problem-solving', url: 'https://chat.deepseek.com/' },
+    { title: 'CodePen', category: 'Development Tool', section: 'tools', description: 'Online code editor and playground for frontend development', url: 'https://codepen.io/trending' },
+    { title: 'Tailwind Gradient Generator', category: 'Design Tool', section: 'tools', description: 'Beautiful gradient generator for Tailwind CSS', url: 'https://gradienty.codes/' },
+    { title: 'CSS Generator', category: 'Development Tool', section: 'tools', description: 'Comprehensive CSS tools and generators', url: 'https://www.cssportal.com/css-functions/counter.php' },
+    { title: 'GitHub Copilot', category: 'AI Tool', section: 'tools', description: 'AI-powered code completion and suggestions', url: 'https://github.com/features/copilot' },
+    { title: 'Figma', category: 'Design Tool', section: 'tools', description: 'Collaborative interface design tool', url: 'https://www.figma.com/' },
+    { title: 'Vercel', category: 'Productivity Tool', section: 'tools', description: 'Platform for frontend frameworks and static sites', url: 'https://vercel.com/' },
+    { title: 'Notion', category: 'Productivity Tool', section: 'tools', description: 'All-in-one workspace for notes, docs, and project management', url: 'https://www.notion.so/' },
+    
+    // Frontend Libraries from LibrariesFrameworksSection
+    { title: 'React', category: 'Frontend Framework', section: 'libraries-frameworks', description: 'A JavaScript library for building user interfaces', url: 'https://react.dev' },
+    { title: 'Vue.js', category: 'Frontend Framework', section: 'libraries-frameworks', description: 'Progressive JavaScript framework for building UIs', url: 'https://vuejs.org' },
+    { title: 'Angular', category: 'Frontend Framework', section: 'libraries-frameworks', description: 'Platform for building mobile and desktop web applications', url: 'https://angular.io' },
+    { title: 'Svelte', category: 'Frontend Framework', section: 'libraries-frameworks', description: 'Cybernetically enhanced web apps', url: 'https://svelte.dev' },
+    { title: 'Framer Motion', category: 'Animation Library', section: 'libraries-frameworks', description: 'Production-ready motion library for React', url: 'https://framer.com/motion' },
+    { title: 'Three.js', category: 'JavaScript Library', section: 'libraries-frameworks', description: 'JavaScript 3D library', url: 'https://threejs.org' },
+    
+    // Backend Frameworks
+    { title: 'Express.js', category: 'Backend Framework', section: 'libraries-frameworks', description: 'Fast, unopinionated web framework for Node.js', url: 'https://expressjs.com' },
+    { title: 'Next.js', category: 'Full-stack Framework', section: 'libraries-frameworks', description: 'The React framework for production', url: 'https://nextjs.org' },
+    { title: 'NestJS', category: 'Backend Framework', section: 'libraries-frameworks', description: 'Progressive Node.js framework for scalable server-side applications', url: 'https://nestjs.com' },
+    { title: 'Fastify', category: 'Backend Framework', section: 'libraries-frameworks', description: 'Fast and low overhead web framework for Node.js', url: 'https://fastify.io' },
+    { title: 'Koa.js', category: 'Backend Framework', section: 'libraries-frameworks', description: 'Next generation web framework for Node.js', url: 'https://koajs.com' },
+    { title: 'Hapi.js', category: 'Backend Framework', section: 'libraries-frameworks', description: 'Rich framework for building applications and services', url: 'https://hapi.dev' },
+    
+    // Mobile Frameworks
+    { title: 'React Native', category: 'Mobile Framework', section: 'libraries-frameworks', description: 'Build mobile apps using React', url: 'https://reactnative.dev' },
+    { title: 'Flutter', category: 'Mobile Framework', section: 'libraries-frameworks', description: 'Google\'s UI toolkit for building natively compiled applications', url: 'https://flutter.dev' },
+    { title: 'Ionic', category: 'Mobile Framework', section: 'libraries-frameworks', description: 'Cross-platform mobile app development', url: 'https://ionicframework.com' },
+    { title: 'Xamarin', category: 'Mobile Framework', section: 'libraries-frameworks', description: 'Microsoft\'s mobile app platform', url: 'https://dotnet.microsoft.com/apps/xamarin' },
+    { title: 'Cordova', category: 'Mobile Framework', section: 'libraries-frameworks', description: 'Mobile apps with HTML, CSS & JS', url: 'https://cordova.apache.org' },
+    { title: 'NativeScript', category: 'Mobile Framework', section: 'libraries-frameworks', description: 'Open source framework for building truly native mobile apps', url: 'https://nativescript.org' },
+    
+    // CSS Frameworks
+    { title: 'Tailwind CSS', category: 'CSS Framework', section: 'libraries-frameworks', description: 'Utility-first CSS framework', url: 'https://tailwindcss.com' },
+    { title: 'Bootstrap', category: 'CSS Framework', section: 'libraries-frameworks', description: 'The most popular HTML, CSS, and JS library', url: 'https://getbootstrap.com' },
+    { title: 'Chakra UI', category: 'UI Library', section: 'libraries-frameworks', description: 'Simple, modular and accessible component library', url: 'https://chakra-ui.com' },
+    { title: 'Material-UI', category: 'UI Library', section: 'libraries-frameworks', description: 'React components implementing Google\'s Material Design', url: 'https://mui.com' },
+    { title: 'Ant Design', category: 'UI Library', section: 'libraries-frameworks', description: 'Enterprise-class UI design language and React components', url: 'https://ant.design' },
+    { title: 'Bulma', category: 'CSS Framework', section: 'libraries-frameworks', description: 'Modern CSS framework based on Flexbox', url: 'https://bulma.io' }
   ];
 
   // Search functionality
@@ -382,46 +455,45 @@ const Header = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            className={`lg:hidden w-14 h-16 flex items-center justify-center text-white rounded-xl transition-all duration-200 relative z-[10010] p-0 ${
-              isMenuOpen 
-                ? 'bg-gradient-to-br from-[#08f9ff]/20 to-[#0066cc]/20 border border-[#08f9ff]/50 shadow-lg shadow-[#08f9ff]/20' 
-                : 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-600/50 hover:border-[#08f9ff]/50 hover:shadow-lg hover:shadow-[#08f9ff]/20'
-            }`}
-            onClick={toggleMenu}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.02 }}
-            style={{ isolation: 'isolate' }}
-          >
-            <div className="relative w-6 h-6 flex flex-col justify-center items-center">
-              <motion.span
-                className="w-6 h-0.5 bg-white block absolute rounded-full"
-                animate={{
-                  rotate: isMenuOpen ? 45 : 0,
-                  y: isMenuOpen ? 0 : -4,
-                }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-              />
-              <motion.span
-                className="w-6 h-0.5 bg-white block absolute rounded-full"
-                animate={{
-                  opacity: isMenuOpen ? 0 : 1,
-                  y: 0,
-                  scaleX: isMenuOpen ? 0 : 1,
-                }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-              />
-              <motion.span
-                className="w-6 h-0.5 bg-white block absolute rounded-full"
-                animate={{
-                  rotate: isMenuOpen ? -45 : 0,
-                  y: isMenuOpen ? 0 : 4,
-                }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-              />
-            </div>
-          </motion.button>
+{/* Mobile Menu Button */}
+<motion.button
+  className={`lg:hidden w-10 h-10 flex items-center justify-center text-white rounded-lg transition-all duration-200 relative z-[10010] ${
+    isMenuOpen
+      ? 'bg-[#08f9ff]/20 border border-[#08f9ff]/50'
+      : 'bg-gray-800/60 border border-gray-600/30 hover:border-[#08f9ff]/40 hover:bg-gray-700/60'
+  }`}
+  onClick={toggleMenu}
+  whileTap={{ scale: 0.95 }}
+  whileHover={{ scale: 1.05 }}
+  style={{ isolation: 'isolate' }}
+>
+  <div className="relative w-5 h-4 flex flex-col justify-between">
+    <motion.span
+      className="w-full h-0.5 bg-white block rounded-full"
+      animate={{
+        rotate: isMenuOpen ? 45 : 0,
+        y: isMenuOpen ? 6 : 0,
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+    />
+    <motion.span
+      className="w-full h-0.5 bg-white block rounded-full"
+      animate={{
+        opacity: isMenuOpen ? 0 : 1,
+        scaleX: isMenuOpen ? 0 : 1,
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+    />
+    <motion.span
+      className="w-full h-0.5 bg-white block rounded-full"
+      animate={{
+        rotate: isMenuOpen ? -45 : 0,
+        y: isMenuOpen ? -6 : 0,
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+    />
+  </div>
+</motion.button>
         </div>
       </nav>
 

@@ -278,9 +278,9 @@ const LibrariesFrameworksSection = () => {
     <motion.section 
       id="libraries-frameworks" 
       className="min-h-screen py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden"
-      initial={isMobile ? {} : { opacity: 0 }}
-      whileInView={isMobile ? {} : { opacity: 1 }}
-      transition={isMobile ? {} : { duration: 1 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
       viewport={{ once: true }}
     >
       {/* Background Particles - Simplified for better performance */}
@@ -311,74 +311,69 @@ const LibrariesFrameworksSection = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <ScrollReveal direction="up" delay={0.1}>
-          <div className="text-center mb-12 sm:mb-16">
-            <motion.h2 
-              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-white">Libraries & </span>
-              <span className="text-[#08f9ff] glow-text">Frameworks</span>
-            </motion.h2>
-            <motion.p 
-              className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              Discover the most popular and powerful libraries and frameworks for modern development
-            </motion.p>
-          </div>
-        </ScrollReveal>
-
-        {/* Category Tabs */}
-        <ScrollReveal direction="up" delay={0.2}>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12">
-            {Object.entries(categories).map(([key, category]) => (
-              <motion.button
-                key={key}
-                onClick={() => setActiveTab(key)}
-                className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 relative overflow-hidden ${
-                  activeTab === key
-                    ? 'bg-gradient-to-r from-[#08f9ff] to-[#0066cc] text-black'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
-                whileHover={isMobile ? {} : { scale: 1.05 }}
-                whileTap={isMobile ? {} : { scale: 0.95 }}
-              >
-                <span className="mr-2">{category.icon}</span>
-                {category.title}
-                {activeTab === key && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-[#08f9ff]/20 to-[#0066cc]/20"
-                    layoutId="activeTab"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        {/* Libraries Grid */}
-        <ScrollReveal direction="up" delay={0.3}>
-          <motion.div
-            key={activeTab}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
+        <div className="text-center mb-12 sm:mb-16">
+          <motion.h2 
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
+            <span className="text-white">Libraries & </span>
+            <span className="text-[#08f9ff] glow-text">Frameworks</span>
+          </motion.h2>
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Discover the most popular and powerful libraries and frameworks for modern development
+          </motion.p>
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12">
+          {Object.entries(categories).map(([key, category]) => (
+            <motion.button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 relative overflow-hidden ${
+                activeTab === key
+                  ? 'bg-gradient-to-r from-[#08f9ff] to-[#0066cc] text-black'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+              }`}
+              whileHover={isMobile ? {} : { scale: 1.05 }}
+              whileTap={isMobile ? {} : { scale: 0.95 }}
+            >
+              <span className="mr-2">{category.icon}</span>
+              {category.title}
+              {activeTab === key && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-[#08f9ff]/20 to-[#0066cc]/20"
+                  layoutId="activeTab"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Libraries Grid */}
+        <motion.div
+          key={activeTab}
+          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto justify-items-center"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
             {(categories[activeTab as keyof typeof categories]?.items || []).map((item, index) => (
               <motion.div
                 key={item.name}
                 variants={itemVariants}
-                className="relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:border-[#08f9ff]/50 transition-all duration-500 group overflow-hidden"
+                className="relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm border border-white/20 rounded-xl p-4 sm:p-6 hover:border-[#08f9ff]/50 transition-all duration-500 group overflow-hidden min-h-[280px] sm:min-h-[320px] w-full max-w-sm mx-auto"
                 whileHover={isMobile ? {} : { 
                   scale: 1.01, 
                   y: -2
@@ -477,7 +472,6 @@ const LibrariesFrameworksSection = () => {
               </motion.div>
             ))}
           </motion.div>
-        </ScrollReveal>
       </div>
     </motion.section>
   );

@@ -225,11 +225,11 @@ const AboutSection = () => {
               <div className="max-w-4xl mx-auto text-center">
                 <h3 className="text-2xl font-bold text-white mb-4">{personalInfo.overview.title}</h3>
                 <p className="text-gray-300 text-lg mb-6">{personalInfo.overview.description}</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto justify-items-center">
                   {personalInfo.overview.highlights.map((highlight, index) => (
                     <motion.div
                       key={index}
-                      className="bg-gray-800/50 p-4 rounded-lg border border-gray-700"
+                      className="bg-gray-800/50 p-4 rounded-lg border border-gray-700 w-full max-w-sm"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -263,7 +263,7 @@ const AboutSection = () => {
 
           {/* Cards Container */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto justify-items-center"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -273,11 +273,11 @@ const AboutSection = () => {
               <motion.div
                 key={card.title}
                 variants={cardVariants}
-                className="group"
+                className="group w-full max-w-sm mx-auto"
                 style={{ perspective: 1000 }}
               >
                 <motion.div
-                  className="relative bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 hover:border-[#08f9ff] transition-all duration-300 hover:shadow-2xl hover:shadow-[#08f9ff]/20 overflow-hidden"
+                  className="relative bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-xl sm:rounded-2xl p-6 sm:p-6 lg:p-8 hover:border-[#08f9ff] transition-all duration-300 hover:shadow-2xl hover:shadow-[#08f9ff]/20 overflow-hidden min-h-[280px] sm:min-h-[320px]"
                   whileHover={{ 
                     scale: 1.02,
                     rotateY: 2,
@@ -295,24 +295,24 @@ const AboutSection = () => {
                   
                   {/* Icon */}
                   <motion.div
-                    className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-[#08f9ff] rounded-full flex items-center justify-center mb-4 sm:mb-5 lg:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300"
+                    className="relative z-10 w-16 h-16 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-[#08f9ff] rounded-full flex items-center justify-center mb-6 sm:mb-5 lg:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300"
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <i className={`${card.icon} text-lg sm:text-xl lg:text-2xl text-black`}></i>
+                    <i className={`${card.icon} text-xl sm:text-xl lg:text-2xl text-black`}></i>
                   </motion.div>
                   
                   {/* Title */}
-                  <h2 className="relative z-10 text-lg sm:text-xl lg:text-2xl font-bold text-center mb-3 sm:mb-4 group-hover:text-[#08f9ff] transition-colors">
+                  <h2 className="relative z-10 text-xl sm:text-xl lg:text-2xl font-bold text-center mb-4 sm:mb-4 group-hover:text-[#08f9ff] transition-colors">
                     {card.title}
                   </h2>
                   
                   {/* Content */}
-                  <div className="relative z-10 space-y-2">
+                  <div className="relative z-10 space-y-3">
                     {card.content.map((line, lineIndex) => (
                       <motion.p
                         key={lineIndex}
-                        className="text-gray-300 text-center group-hover:text-white transition-colors text-sm sm:text-base"
+                        className="text-gray-300 text-center group-hover:text-white transition-colors text-base sm:text-base leading-relaxed"
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.4, delay: lineIndex * 0.1 }}
@@ -333,7 +333,7 @@ const AboutSection = () => {
           {/* Social Icons */}
           <ScrollReveal direction="scale" delay={0.5}>
             <motion.div
-              className="flex justify-center space-x-3 sm:space-x-4 lg:space-x-6"
+              className="flex justify-center items-center space-x-4 sm:space-x-6 lg:space-x-8 px-4 sm:px-6 lg:px-8 max-w-md mx-auto"
               variants={containerVariants}
               initial="hidden"
             whileInView="visible"
@@ -352,16 +352,16 @@ const AboutSection = () => {
                   className="group"
                 >
                   <motion.div
-                    className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-full flex items-center justify-center hover:border-[#08f9ff] hover:shadow-lg hover:shadow-[#08f9ff]/30 transition-all duration-300"
+                    className="w-16 h-16 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-xl flex items-center justify-center hover:border-[#08f9ff] hover:shadow-lg hover:shadow-[#08f9ff]/30 transition-all duration-300"
                     whileHover={{ 
                       scale: 1.1,
-                      rotate: 360,
+                      y: -5,
                       backgroundColor: '#08f9ff'
                     }}
-                    whileTap={{ scale: 0.9 }}
+                    whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <i className={`${social.icon} text-base sm:text-lg lg:text-xl text-white group-hover:text-black transition-colors`}></i>
+                    <i className={`${social.icon} text-xl sm:text-lg lg:text-xl text-gray-400 group-hover:text-black transition-colors`}></i>
                   </motion.div>
                 </Link>
               </motion.div>
