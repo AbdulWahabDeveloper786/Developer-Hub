@@ -190,7 +190,17 @@ const Header = () => {
     { title: 'MDN Web Docs', category: 'Resource', section: 'resources', description: 'Web development documentation', url: 'https://developer.mozilla.org' },
     { title: 'Vercel', category: 'Platform', section: 'tools', description: 'Frontend deployment platform', url: 'https://vercel.com' },
     { title: 'Netlify', category: 'Platform', section: 'tools', description: 'Web development platform', url: 'https://netlify.com' },
-    { title: 'Figma', category: 'Design Tool', section: 'tools', description: 'Collaborative interface design tool', url: 'https://figma.com' }
+    { title: 'Figma', category: 'Design Tool', section: 'tools', description: 'Collaborative interface design tool', url: 'https://figma.com' },
+    { title: 'Dribbble', category: 'Design Resource', section: 'resources', description: 'Design inspiration and portfolio platform for creative professionals', url: 'https://dribbble.com' },
+    { title: 'Pngtree', category: 'Design Resource', section: 'resources', description: 'Millions of PNG images, backgrounds and vectors for free download', url: 'https://pngtree.com' },
+    { title: 'Behance', category: 'Design Resource', section: 'resources', description: 'Creative portfolio platform by Adobe', url: 'https://behance.net' },
+    { title: 'Unsplash', category: 'Design Resource', section: 'resources', description: 'Free high-resolution photos', url: 'https://unsplash.com' },
+    { title: 'Freepik', category: 'Design Resource', section: 'resources', description: 'Free vectors, stock photos and PSD files', url: 'https://freepik.com' },
+    { title: 'Canva', category: 'Design Tool', section: 'tools', description: 'Online graphic design platform', url: 'https://canva.com' },
+    { title: 'Adobe XD', category: 'Design Tool', section: 'tools', description: 'Vector-based user experience design tool', url: 'https://adobe.com/products/xd.html' },
+    { title: 'Sketch', category: 'Design Tool', section: 'tools', description: 'Digital design toolkit for Mac', url: 'https://sketch.com' },
+    { title: 'InVision', category: 'Design Tool', section: 'tools', description: 'Digital product design platform', url: 'https://invisionapp.com' },
+    { title: 'Zeplin', category: 'Design Tool', section: 'tools', description: 'Design handoff and collaboration tool', url: 'https://zeplin.io' }
   ];
 
   // Search functionality
