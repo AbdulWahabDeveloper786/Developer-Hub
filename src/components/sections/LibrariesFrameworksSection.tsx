@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import ScrollReveal from '@/components/ui/ScrollReveal';
 import useMobile from '@/hooks/useMobile';
 
 const LibrariesFrameworksSection = () => {

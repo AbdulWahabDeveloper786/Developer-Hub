@@ -89,7 +89,7 @@ export default function LoadingAnimation({ onComplete }: LoadingAnimationProps) 
       clearInterval(progressInterval);
       clearInterval(textInterval);
     };
-  }, [onComplete, loadingTexts]);
+  }, [onComplete, loadingTexts, isMobile]);
 
   return (
     <AnimatePresence>

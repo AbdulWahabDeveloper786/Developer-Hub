@@ -17,7 +17,6 @@ const HeroSection = () => {
 
   useEffect(() => {
     let typed: InstanceType<typeof import('typed.js').default> | null = null;
-    let timeoutId: NodeJS.Timeout;
     
     const initTyped = async () => {
       try {
@@ -53,7 +52,7 @@ const HeroSection = () => {
     };
 
     // Add a small delay to ensure DOM is ready
-    timeoutId = setTimeout(initTyped, 100);
+    const timeoutId = setTimeout(initTyped, 100);
     
     return () => {
       clearTimeout(timeoutId);

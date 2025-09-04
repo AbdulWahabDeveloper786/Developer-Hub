@@ -109,7 +109,7 @@ const CustomCursor = () => {
         style.parentNode.removeChild(style);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, updateMousePosition]);
 
   // Don't render cursor on mobile devices
   if (isMobile) {
